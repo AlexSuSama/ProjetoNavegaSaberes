@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
+import javax.swing.JList;
+import javax.swing.JTextField;
 
 public class GraficosBiometricos extends JInternalFrame {
 	JFormattedTextField textDataInicial;
@@ -42,7 +44,10 @@ public class GraficosBiometricos extends JInternalFrame {
 	private JPanel contentPane;
 	JLabel labelGrafico;
 	boolean selecionado = false;
-
+	private JTextField textFieldPovoamento;
+	
+	private static int SELECIONARBIOMETRIA = 0;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -65,7 +70,7 @@ public class GraficosBiometricos extends JInternalFrame {
 	public GraficosBiometricos() {
 		setTitle("Gr\u00E1ficos biom\u00E9tricos");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 753, 461);
+		setBounds(100, 100, 800, 473);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -73,7 +78,7 @@ public class GraficosBiometricos extends JInternalFrame {
 
 		JScrollPane scrollPane = new JScrollPane((Component) null, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(30, 79, 682, 309);
+		scrollPane.setBounds(54, 79, 682, 309);
 		contentPane.add(scrollPane);
 
 		JPanel panel = new JPanel();
@@ -86,12 +91,12 @@ public class GraficosBiometricos extends JInternalFrame {
 
 		JLabel label = new JLabel("Selecione o Per\u00EDodo");
 		label.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		label.setBounds(30, 44, 119, 14);
+		label.setBounds(314, 54, 119, 14);
 		contentPane.add(label);
 		try {
 			MaskFormatter mascara = new MaskFormatter("##-##-####");
 			textDataInicial = new JFormattedTextField(mascara);
-			textDataInicial.setBounds(197, 42, 108, 20);
+			textDataInicial.setBounds(443, 48, 108, 20);
 			contentPane.add(textDataInicial);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -99,12 +104,12 @@ public class GraficosBiometricos extends JInternalFrame {
 
 		JLabel label_1 = new JLabel("at\u00E9");
 		label_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		label_1.setBounds(315, 44, 24, 14);
+		label_1.setBounds(581, 54, 24, 14);
 		contentPane.add(label_1);
 		try {
 			MaskFormatter mascara = new MaskFormatter("##-##-####");
 			textDataFinal = new JFormattedTextField((mascara));
-			textDataFinal.setBounds(349, 42, 108, 20);
+			textDataFinal.setBounds(628, 48, 108, 20);
 			contentPane.add(textDataFinal);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -112,12 +117,12 @@ public class GraficosBiometricos extends JInternalFrame {
 
 		JButton btnBuscar = new JButton("Buscar");
 
-		btnBuscar.setBounds(491, 41, 89, 23);
+		btnBuscar.setBounds(685, 409, 89, 23);
 		btnBuscar.addActionListener(gerarGrafico());
 		contentPane.add(btnBuscar);
 
 		JRadioButton radioButtonCrescimento = new JRadioButton("Crescimento");
-		radioButtonCrescimento.setBounds(29, 14, 109, 23);
+		radioButtonCrescimento.setBounds(54, 395, 109, 23);
 		radioButtonCrescimento.addActionListener(new ActionListener() {
 
 			@Override
@@ -137,7 +142,7 @@ public class GraficosBiometricos extends JInternalFrame {
 
 			}
 		});
-		radioButtonTotal.setBounds(251, 14, 109, 23);
+		radioButtonTotal.setBounds(286, 397, 109, 23);
 		contentPane.add(radioButtonTotal);
 
 		JRadioButton radioButtonAmbiente = new JRadioButton("Ambiente");
@@ -148,7 +153,7 @@ public class GraficosBiometricos extends JInternalFrame {
 
 			}
 		});
-		radioButtonAmbiente.setBounds(140, 14, 109, 23);
+		radioButtonAmbiente.setBounds(165, 395, 109, 23);
 		contentPane.add(radioButtonAmbiente);
 
 		JRadioButton radioButtonMortalidade = new JRadioButton("Mortalidade");
@@ -159,7 +164,7 @@ public class GraficosBiometricos extends JInternalFrame {
 
 			}
 		});
-		radioButtonMortalidade.setBounds(362, 12, 109, 23);
+		radioButtonMortalidade.setBounds(397, 395, 109, 23);
 		contentPane.add(radioButtonMortalidade);
 
 		ButtonGroup groupRadio = new ButtonGroup();
@@ -167,6 +172,40 @@ public class GraficosBiometricos extends JInternalFrame {
 		groupRadio.add(radioButtonCrescimento);
 		groupRadio.add(radioButtonTotal);
 		groupRadio.add(radioButtonMortalidade);
+		
+		JButton btnVoltar = new JButton("Voltar");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				EscolhaGrafico escolhaGrafico = new EscolhaGrafico();
+				Home.repassarTelas(escolhaGrafico);
+				dispose();
+			}
+		});
+		btnVoltar.setBounds(574, 409, 89, 23);
+		contentPane.add(btnVoltar);
+		
+		JButton btnSelecionarPovoamento = new JButton("Selecionar Povoamento");
+		btnSelecionarPovoamento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			ListaPovoamentosGrafico listaPovoamentosGrafico = new ListaPovoamentosGrafico();
+			listaPovoamentosGrafico.controladorDeSelecao(SELECIONARBIOMETRIA);
+			listaPovoamentosGrafico.setVisible(true);
+			
+			}
+		}); 
+		btnSelecionarPovoamento.setBounds(54, 6, 150, 37);
+		contentPane.add(btnSelecionarPovoamento);
+		
+		JLabel lblPovoamento = new JLabel("Povoamento");
+		lblPovoamento.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblPovoamento.setBounds(531, 6, 109, 14);
+		contentPane.add(lblPovoamento);
+		
+		textFieldPovoamento = new JTextField(); 
+		textFieldPovoamento.setEditable(false);
+		textFieldPovoamento.setBounds(650, 6, 86, 20);
+		contentPane.add(textFieldPovoamento);
+		textFieldPovoamento.setColumns(10);
 
 	}
 
@@ -193,14 +232,14 @@ public class GraficosBiometricos extends JInternalFrame {
 						try {
 							geradorDeGraficosBiometria.graficoPeriodoDeCrescimento(
 									saidaEntrada.biometriasPorPeriodo(
-											"'" + ValidacaoDeDatas.padronizarDatasParaBusca(dataInicial) + "'",
-											"'" + ValidacaoDeDatas.padronizarDatasParaBusca(dataFinal) + "'", "25"),
+											"'" + ValidacaoDeDatas.padronizarDatasParaBusca(dataInicial) + "'", 
+											"'" + ValidacaoDeDatas.padronizarDatasParaBusca(dataFinal) + "'",  textFieldPovoamento.getText().toString()),
 									"Média de crescimento", "Período", "m m");
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						try {
+						try { 
 							geradorDeGraficosBiometria.salvarGrafico(new FileOutputStream("imgGrafico01.png"));
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
@@ -214,7 +253,7 @@ public class GraficosBiometricos extends JInternalFrame {
 							geradorDeGraficosBiometria.graficoPeriodoSalinidadeTemperatura(
 									saidaEntrada.biometriasPorPeriodo(
 											"'" + ValidacaoDeDatas.padronizarDatasParaBusca(dataInicial) + "'",
-											"'" + ValidacaoDeDatas.padronizarDatasParaBusca(dataFinal) + "'", "25"),
+											"'" + ValidacaoDeDatas.padronizarDatasParaBusca(dataFinal) + "'", textFieldPovoamento.getText().toString()),
 									"Salinidade e Temperatura", "agora", "Salinidade X Temperatura");
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
@@ -233,7 +272,7 @@ public class GraficosBiometricos extends JInternalFrame {
 							geradorDeGraficosBiometria.graficoTotalDeOstras(
 									saidaEntrada.biometriasPorPeriodo(
 											"'" + ValidacaoDeDatas.padronizarDatasParaBusca(dataInicial) + "'",
-											"'" + ValidacaoDeDatas.padronizarDatasParaBusca(dataFinal) + "'", "25"),
+											"'" + ValidacaoDeDatas.padronizarDatasParaBusca(dataFinal) + "'",  textFieldPovoamento.getText().toString()),
 									"Total de unidades", "agora", "Quantidade");
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
@@ -253,8 +292,10 @@ public class GraficosBiometricos extends JInternalFrame {
 							geradorDeGraficosBiometria.graficoPeriodoMortalidadeSobrevivencia(
 									saidaEntrada.biometriasPorPeriodo(
 											"'" + ValidacaoDeDatas.padronizarDatasParaBusca(dataInicial) + "'",
-											"'" + ValidacaoDeDatas.padronizarDatasParaBusca(dataFinal) + "'", "25"),
+											"'" + ValidacaoDeDatas.padronizarDatasParaBusca(dataFinal) + "'", textFieldPovoamento.getText().toString()),
 									"Mortalidade", "agora", "Quantidade");
+							//apenas para testar
+							System.out.println("id "+textFieldPovoamento.getText().toString());
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -267,7 +308,7 @@ public class GraficosBiometricos extends JInternalFrame {
 						}
 
 						break;
-
+ 
 					default:
 						break;
 
@@ -294,5 +335,8 @@ public class GraficosBiometricos extends JInternalFrame {
 				}
 			}
 		};
+	}
+	public void atualizarInfoPov(String povoamento){
+		textFieldPovoamento.setText(povoamento);
 	}
 }

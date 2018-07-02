@@ -46,7 +46,10 @@ public class CadastroEstoque extends JInternalFrame {
 	private JTextField txtFieldData;
 
 	private RestricoesDeValores restricao = new RestricoesDeValores();
+	private JTextField textFieldIdPovoamento;
 
+	private String idPovoamento;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -267,43 +270,57 @@ public class CadastroEstoque extends JInternalFrame {
 		panel.add(txtFieldMesaMadeira);
 		try {
 			MaskFormatter mascara = new MaskFormatter("##/##/####");
-		txtFieldData = new JFormattedTextField(mascara);
-		txtFieldData.setColumns(10);
-		txtFieldData.setBounds(161, 54, 86, 20);
-		panel.add(txtFieldData);
-		}catch (Exception e) {
+			txtFieldData = new JFormattedTextField(mascara);
+			txtFieldData.setColumns(10);
+			txtFieldData.setBounds(161, 54, 86, 20);
+			panel.add(txtFieldData);
+		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		JLabel lblData = new JLabel("Data");
 		lblData.setBounds(98, 57, 61, 14);
 		panel.add(lblData);
-		
+
 		JLabel label = new JLabel("*");
 		label.setBounds(87, 57, 22, 14);
 		panel.add(label);
 
 		background.add(scroll);
-		
-				JButton btnSalvar = new JButton("Salvar");
-				btnSalvar.setBounds(437, 422, 89, 23);
-				background.add(btnSalvar);
-				
-						JButton btnCancelar = new JButton("Cancelar");
-						btnCancelar.setBounds(585, 422, 89, 23);
-						background.add(btnCancelar);
-						
-						JLabel lblTelaDeCadastro = new JLabel("Tela de cadastro do estoque");
-						lblTelaDeCadastro.setBounds(22, 21, 229, 14);
-						background.add(lblTelaDeCadastro);
-						btnCancelar.addActionListener(new ActionListener() {
 
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								// TODO Auto-generated method stub
-								dispose();
-							}
-						});
-				btnSalvar.addActionListener(btnSalvar());
+		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.setBounds(437, 422, 89, 23);
+		background.add(btnSalvar);
+
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(585, 422, 89, 23);
+		background.add(btnCancelar);
+
+		JLabel lblTelaDeCadastro = new JLabel("Tela de cadastro do estoque");
+		lblTelaDeCadastro.setBounds(22, 21, 229, 14);
+		background.add(lblTelaDeCadastro);
+
+		JLabel lblIdPovoamento = new JLabel("id Povoamento");
+		lblIdPovoamento.setBounds(318, 21, 94, 14);
+		background.add(lblIdPovoamento);
+
+		textFieldIdPovoamento = new JTextField();
+		textFieldIdPovoamento.setEditable(false);
+		textFieldIdPovoamento.setBounds(440, 18, 86, 20);
+		background.add(textFieldIdPovoamento);
+		textFieldIdPovoamento.setColumns(10);
+		btnCancelar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				TelaDeEstoque telaDeEstoque = new TelaDeEstoque();
+				telaDeEstoque.preencherCampos(idPovoamento);
+				telaDeEstoque.preencherIDPovoamento(idPovoamento);
+				Home.repassarTelas(telaDeEstoque);
+				dispose();
+			}
+		});
+		btnSalvar.addActionListener(btnSalvar());
 
 	}
 
@@ -327,6 +344,7 @@ public class CadastroEstoque extends JInternalFrame {
 
 					int coletores = Integer.parseInt(txtFieldColetores.getText().toString());
 					int varal = Integer.parseInt(txtFieldVaral.getText().toString());
+					//falta adicionar essa informação no banco de dados
 					int lanterna = Integer.parseInt(txtFieldLanternas.getText().toString());
 					int longline = Integer.parseInt(txtFieldLongline.getText().toString());
 					int mesaMadeira = Integer.parseInt(txtFieldMesaMadeira.getText().toString());
@@ -338,11 +356,16 @@ public class CadastroEstoque extends JInternalFrame {
 					Estoque estoque = new Estoque(ValidacaoDeDatas.ordenarData(data), baby, semente, media, master,
 							juvenil, malha69, malha12, malha14, malha21, longline, varal, mesaTelada, mesaPVC,
 							mesaMadeira, coletores);
-					estoque.criarEstoque();
+					estoque.criarEstoque(idPovoamento);
 				} else {
 					JOptionPane.showMessageDialog(null, "campo obrigatório vazio");
 				}
 			}
 		};
+	}
+
+	public void preecherIdPovoamento(String id) {
+		textFieldIdPovoamento.setText(id);
+		idPovoamento = id;
 	}
 }

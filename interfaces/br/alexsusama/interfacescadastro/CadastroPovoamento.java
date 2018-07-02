@@ -122,18 +122,6 @@ public class CadastroPovoamento extends JInternalFrame {
 		contentPane.add(textFieldIdPovoamento);
 		textFieldIdPovoamento.setColumns(10);
 
-		JButton btnEditar = new JButton("editar");
-		btnEditar.setEnabled(false);
-		btnEditar.setBounds(23, 367, 89, 23);
-		// btnEditar.addActionListener(btnEditar());
-		contentPane.add(btnEditar);
-
-		JButton btnExcluir = new JButton("excluir");
-		btnExcluir.setEnabled(false);
-		btnExcluir.setBounds(23, 401, 89, 23);
-		// btnExcluir.addActionListener(btnExcluir());
-		contentPane.add(btnExcluir);
-
 		JLabel lblQuantidadeDeSementes = new JLabel("Quantidade de Sementes");
 		lblQuantidadeDeSementes.setBounds(39, 96, 140, 14);
 		contentPane.add(lblQuantidadeDeSementes);
@@ -251,8 +239,6 @@ public class CadastroPovoamento extends JInternalFrame {
 		}
 
 		JLabel lblDadasdasd = new JLabel("");
-		lblDadasdasd.setIcon(new ImageIcon(
-				"C:\\Users\\AlexSama\\Pictures\\depositphotos_38668035-stock-photo-texture-of-human-skin.jpg"));
 		lblDadasdasd.setForeground(Color.RED);
 		lblDadasdasd.setBackground(Color.RED);
 		lblDadasdasd.setBounds(0, 0, 584, 39);
@@ -287,7 +273,7 @@ public class CadastroPovoamento extends JInternalFrame {
 				String data = textFieldDataPovoamento.getText().trim().toString();
 				if (!(textFieldLocalidade.getText().trim().equals("") || textFieldMunicipio.getText().trim().equals("")
 						|| textFieldOstricultor.getText().trim().equals("")				
-						|| textFieldQTSementes.getText().trim().equals(""))&& textFieldDataPovoamento.getText().trim().equals("//")) {
+						|| textFieldQTSementes.getText().trim().equals("")||textFieldDataPovoamento.getText().trim().equals("//"))) {
 					
 					String dataInicial = textFieldDataPovoamento.getText().toString();
 					String nomeOstricultor = textFieldOstricultor.getText().toString();

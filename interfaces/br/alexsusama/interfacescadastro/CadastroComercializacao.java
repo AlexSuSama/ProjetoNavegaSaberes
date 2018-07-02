@@ -16,6 +16,8 @@ import br.alexsusama.validacoes.ValidacaoDeDatas;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -25,6 +27,8 @@ import java.beans.MethodDescriptor;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.UIManager;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
 
 public class CadastroComercializacao extends JInternalFrame {
 
@@ -36,9 +40,13 @@ public class CadastroComercializacao extends JInternalFrame {
 	private JTextField textFieldValor;
 	private JTextField textFieldNomeComprador;
 	private String tipoComprador = "";
-	private String tipoVendido = ""; 
+	private String tipoVendido = "";
 	private boolean atualizar = true;
 	private int idComercializacao;
+	private JTextField textFieldIDPovoamento;
+
+	private String idDoPovoamento = "";
+	private JTextField textFieldValorFrete;
 
 	/**
 	 * Launch the application.
@@ -76,27 +84,28 @@ public class CadastroComercializacao extends JInternalFrame {
 		RestricoesDeValores restricao = new RestricoesDeValores();
 
 		JLabel lblData = new JLabel("Data");
-		lblData.setBounds(41, 41, 46, 14);
+		lblData.setBounds(41, 73, 46, 14);
 		contentPane.add(lblData);
 
 		JLabel lblMunicpio = new JLabel("Munic\u00EDpio");
-		lblMunicpio.setBounds(41, 81, 57, 14);
+		lblMunicpio.setBounds(41, 101, 57, 14);
 		contentPane.add(lblMunicpio);
 
 		JLabel lblLocal = new JLabel("Local");
-		lblLocal.setBounds(453, 81, 57, 14);
+		lblLocal.setBounds(453, 98, 57, 14);
 		contentPane.add(lblLocal);
 
 		JLabel lblTamanhoComercializado = new JLabel("Tamanho comercializado");
 		lblTamanhoComercializado.setBounds(41, 129, 144, 14);
 		contentPane.add(lblTamanhoComercializado);
 
-		ButtonGroup group = new ButtonGroup();
-
+		ButtonGroup groupOstras = new ButtonGroup();
+		ButtonGroup comprador = new ButtonGroup();
+		
 		JRadioButton rdbtnBaby = new JRadioButton("Baby");
 		rdbtnBaby.setBounds(51, 150, 109, 23);
 		contentPane.add(rdbtnBaby);
-		group.add(rdbtnBaby);
+		groupOstras.add(rdbtnBaby);
 		rdbtnBaby.addActionListener(new ActionListener() {
 
 			@Override
@@ -109,7 +118,7 @@ public class CadastroComercializacao extends JInternalFrame {
 		JRadioButton rdbtnMdia = new JRadioButton("M\u00E9dia");
 		rdbtnMdia.setBounds(162, 150, 109, 23);
 		contentPane.add(rdbtnMdia);
-		group.add(rdbtnMdia);
+		groupOstras.add(rdbtnMdia);
 		rdbtnMdia.addActionListener(new ActionListener() {
 
 			@Override
@@ -121,7 +130,7 @@ public class CadastroComercializacao extends JInternalFrame {
 		JRadioButton rdbtnMaster = new JRadioButton("Master");
 		rdbtnMaster.setBounds(273, 150, 109, 23);
 		contentPane.add(rdbtnMaster);
-		group.add(rdbtnMaster);
+		groupOstras.add(rdbtnMaster);
 		rdbtnMaster.addActionListener(new ActionListener() {
 
 			@Override
@@ -143,7 +152,7 @@ public class CadastroComercializacao extends JInternalFrame {
 		JRadioButton rdbtnP = new JRadioButton("Pessoa F\u00EDsica");
 		rdbtnP.setBounds(51, 304, 124, 23);
 		contentPane.add(rdbtnP);
-		group.add(rdbtnP);
+		comprador.add(rdbtnP);
 		rdbtnP.addActionListener(new ActionListener() {
 
 			@Override
@@ -155,7 +164,7 @@ public class CadastroComercializacao extends JInternalFrame {
 		JRadioButton rdbtnPessoaJu = new JRadioButton("Pessoa Jur\u00EDdica");
 		rdbtnPessoaJu.setBounds(185, 304, 130, 23);
 		contentPane.add(rdbtnPessoaJu);
-		group.add(rdbtnPessoaJu);
+		comprador.add(rdbtnPessoaJu);
 		rdbtnPessoaJu.addActionListener(new ActionListener() {
 
 			@Override
@@ -189,7 +198,7 @@ public class CadastroComercializacao extends JInternalFrame {
 		try {
 			MaskFormatter mascara = new MaskFormatter("##/##/####");
 			textFieldDataComercializacao = new JFormattedTextField(mascara);
-			textFieldDataComercializacao.setBounds(122, 38, 69, 20);
+			textFieldDataComercializacao.setBounds(108, 70, 69, 20);
 			contentPane.add(textFieldDataComercializacao);
 			textFieldDataComercializacao.setColumns(10);
 		} catch (Exception e) {
@@ -198,14 +207,14 @@ public class CadastroComercializacao extends JInternalFrame {
 		textFieldMunicipio = new JTextField();
 		textFieldMunicipio.setToolTipText("Insira o nome do munic\u00EDpio vendido");
 		textFieldMunicipio.setColumns(10);
-		textFieldMunicipio.setBounds(108, 78, 237, 20);
+		textFieldMunicipio.setBounds(108, 98, 237, 20);
 		textFieldMunicipio.addKeyListener(restricao.negarNumeros(textFieldMunicipio));
 		contentPane.add(textFieldMunicipio);
 
 		textFieldLocal = new JTextField();
 		textFieldLocal.setToolTipText("Insira o nome do local vendido");
 		textFieldLocal.setColumns(10);
-		textFieldLocal.setBounds(492, 78, 237, 20);
+		textFieldLocal.setBounds(492, 95, 237, 20);
 		textFieldLocal.addKeyListener(restricao.negarNumeros(textFieldLocal));
 		contentPane.add(textFieldLocal);
 
@@ -231,15 +240,15 @@ public class CadastroComercializacao extends JInternalFrame {
 		contentPane.add(textFieldNomeComprador);
 
 		JLabel label = new JLabel("*");
-		label.setBounds(22, 41, 22, 14);
+		label.setBounds(22, 73, 22, 14);
 		contentPane.add(label);
 
 		JLabel label_1 = new JLabel("*");
-		label_1.setBounds(22, 81, 22, 14);
+		label_1.setBounds(22, 101, 22, 14);
 		contentPane.add(label_1);
 
 		JLabel label_2 = new JLabel("*");
-		label_2.setBounds(422, 81, 22, 14);
+		label_2.setBounds(422, 98, 22, 14);
 		contentPane.add(label_2);
 
 		JLabel label_3 = new JLabel("*");
@@ -258,6 +267,33 @@ public class CadastroComercializacao extends JInternalFrame {
 		JLabel label_6 = new JLabel("*");
 		label_6.setBounds(22, 337, 22, 14);
 		contentPane.add(label_6);
+
+		JLabel lblId = new JLabel("ID Povoamento");
+		lblId.setBounds(22, 11, 96, 14);
+		contentPane.add(lblId); 
+
+		textFieldIDPovoamento = new JTextField();
+		textFieldIDPovoamento.setEditable(false);
+		textFieldIDPovoamento.setBounds(108, 8, 86, 20);
+		contentPane.add(textFieldIDPovoamento);
+		textFieldIDPovoamento.setColumns(10);
+		
+		JLabel lblValorDoFrete = new JLabel("Valor do frete");
+		lblValorDoFrete.setBounds(453, 240, 75, 14);
+		contentPane.add(lblValorDoFrete);
+		
+		textFieldValorFrete = new JTextField();
+		textFieldValorFrete.setToolTipText("insira o valor da venda em R$");
+		textFieldValorFrete.setColumns(10);
+		textFieldValorFrete.setBounds(578, 237, 151, 20);
+		contentPane.add(textFieldValorFrete);
+		
+		JLabel label_7 = new JLabel("*");
+		label_7.setBounds(422, 240, 22, 14);
+		contentPane.add(label_7);
+		
+		
+		
 	}
 
 	public ActionListener btnSalvar() {
@@ -271,7 +307,7 @@ public class CadastroComercializacao extends JInternalFrame {
 							|| textFieldLocal.getText().equals("") || textFieldMunicipio.getText().equals("")
 							|| textFieldNomeComprador.getText().equals("") || textFieldQTVendida.getText().equals("")
 							|| textFieldValor.getText().equals("") || tipoComprador.equals("")
-							|| tipoVendido.equals(""))) {
+							|| tipoVendido.equals("")||textFieldValorFrete.getText().equals(""))) {
 
 						String nomeComprador = textFieldNomeComprador.getText().toString();
 						String dataVenda = textFieldDataComercializacao.getText().toString();
@@ -279,10 +315,11 @@ public class CadastroComercializacao extends JInternalFrame {
 						String local = textFieldLocal.getText().toString();
 						int qtVendida = Integer.parseInt(textFieldQTVendida.getText().toString());
 						int valor = Integer.parseInt(textFieldValor.getText().toString());
-
+						int valorFrete = Integer.parseInt(textFieldValorFrete.getText().toString());
+						
 						Comercializacao comercializacao = new Comercializacao(nomeComprador, tipoComprador, municipio,
-								local, tipoVendido, qtVendida, ValidacaoDeDatas.ordenarData(dataVenda), valor);
-						comercializacao.criarComercializacao();
+								local, tipoVendido, qtVendida, ValidacaoDeDatas.ordenarData(dataVenda), valor,valorFrete);
+						comercializacao.criarComercializacao(idDoPovoamento);
 
 					} else {
 						JOptionPane.showMessageDialog(null, "Algum campo obrigatório esta vázio");
@@ -293,7 +330,7 @@ public class CadastroComercializacao extends JInternalFrame {
 							|| textFieldLocal.getText().equals("") || textFieldMunicipio.getText().equals("")
 							|| textFieldNomeComprador.getText().equals("") || textFieldQTVendida.getText().equals("")
 							|| textFieldValor.getText().equals("") || tipoComprador.equals("")
-							|| tipoVendido.equals(""))) {
+							|| tipoVendido.equals("")||textFieldValorFrete.getText().equals(""))) {
 
 						String nomeComprador = textFieldNomeComprador.getText().toString();
 						String dataVenda = textFieldDataComercializacao.getText().toString();
@@ -301,18 +338,28 @@ public class CadastroComercializacao extends JInternalFrame {
 						String local = textFieldLocal.getText().toString();
 						int qtVendida = Integer.parseInt(textFieldQTVendida.getText().toString());
 						int valor = Integer.parseInt(textFieldValor.getText().toString());
-
+						int valorFrete = Integer.parseInt(textFieldValorFrete.getText().toString());
+						
 						Comercializacao comercializacao = new Comercializacao(nomeComprador, tipoComprador, municipio,
-								local, tipoVendido, qtVendida, ValidacaoDeDatas.ordenarData(dataVenda), valor);
+								local, tipoVendido, qtVendida, ValidacaoDeDatas.ordenarData(dataVenda), valor,valorFrete);
 						comercializacao.editarComercializacao(String.valueOf(idComercializacao));
 
 					} else {
 						JOptionPane.showMessageDialog(null, "Algum campo não foi preenchido corretamente");
 					}
-				}
+				} 
 			}
 		};
 
+	}
+
+	public void repassarIdPovoamento(String id) {
+		if (!id.equals("")) {
+			textFieldIDPovoamento.setText(id);
+			idDoPovoamento = id;
+		} else {
+			System.out.println("id inválido");
+		}
 	}
 
 	public void atualizarCampos(Comercializacao comercializacao, boolean atualizar) {

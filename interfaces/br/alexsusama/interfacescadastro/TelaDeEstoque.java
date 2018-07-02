@@ -13,6 +13,7 @@ import br.alexsusama.persisntencia.SaidaEntradaEstoque;
 import br.alexsusama.validacoes.ValidacaoDeDatas;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -38,6 +39,7 @@ public class TelaDeEstoque extends JInternalFrame {
 	private JTextField textFieldMesaTela;
 	private JTextField textFieldMesaPVC;
 	private JTextField textFieldMesaMadeira;
+	private JTextField textFieldIDPovoamento;
 
 	/**
 	 * Launch the application.
@@ -258,24 +260,51 @@ public class TelaDeEstoque extends JInternalFrame {
 		btnAtualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				CadastroEstoque cadastroEstoque = new CadastroEstoque();
+				cadastroEstoque.preecherIdPovoamento(textFieldIDPovoamento.getText().toString());
 				Home.repassarTelas(cadastroEstoque);
 				dispose();
 			}
 		});
 		btnAtualizar.setBounds(668, 11, 89, 33);
 		contentPane.add(btnAtualizar);
+		
+		JButton btnSelecioneOPovoamento = new JButton("Selecione o povoamento");
+		btnSelecioneOPovoamento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListaPovoamentosEstoque listaPovoamentosEstoque = new ListaPovoamentosEstoque();
+				
+				listaPovoamentosEstoque.setVisible(true);
+			}
+		});
+		btnSelecioneOPovoamento.setBounds(504, 11, 149, 33);
+		contentPane.add(btnSelecioneOPovoamento);
+		
+		textFieldIDPovoamento = new JTextField();
+		textFieldIDPovoamento.setEditable(false);
+		textFieldIDPovoamento.setBounds(378, 17, 86, 20);
+		contentPane.add(textFieldIDPovoamento);
+		textFieldIDPovoamento.setColumns(10);
+		
+		JLabel lblIdPovoamento = new JLabel("ID povoamento");
+		lblIdPovoamento.setBounds(265, 20, 103, 14);
+		contentPane.add(lblIdPovoamento);
 	}
-	public void preencherCampos(){
-		SaidaEntradaEstoque entrada = new SaidaEntradaEstoque();
-		Estoque estoque = entrada.resgatarEstoque();
+	public void preencherCampos(String idPovoamento){
+		SaidaEntradaEstoque entrada = new SaidaEntradaEstoque(); 
+		Estoque estoque = entrada.resgatarEstoque(idPovoamento);
+		
+		if(estoque != null){
+		
+		
 		
 		textFieldSemente.setText(String.valueOf(estoque.getOstraSemente()));
 		textFieldBaby.setText(String.valueOf(estoque.getOstraBaby()));
 		textFieldJuvenil.setText(String.valueOf(estoque.getOstraJuvenil()));
 		textFieldMedia.setText(String.valueOf(estoque.getOstraJuvenil()));
 		textFieldMaster.setText(String.valueOf(estoque.getOstraMaster()));
+		 //algo de errado nessa parte do codigo faz com que n prossiga
 		
-		textFieldData.setText(ValidacaoDeDatas.padronizarDatasNoCampo(estoque.getDataEstoque()));
+		textFieldData.setText(ValidacaoDeDatas.padronizarDatasCampoAtualizacao(estoque.getDataEstoque()));
 		
 		textFieldColetores.setText(String.valueOf(estoque.getColetores()));
 		textFieldLongline.setText(String.valueOf(estoque.getLongLine()));
@@ -287,6 +316,15 @@ public class TelaDeEstoque extends JInternalFrame {
 		textFieldMesaPVC.setText(String.valueOf(estoque.getMesaPVC()));
 		textFieldMesaTela.setText(String.valueOf(estoque.getMesaTelada()));
 		textFieldVaral.setText(String.valueOf(estoque.getVaral()));
+		}else{
+			System.out.println("sem registro");
+			
+		}
+		}
+	public void preencherIDPovoamento(String idPovoamento){
+		textFieldIDPovoamento.setText(idPovoamento);
+		
+		//preencherCampos(idPovoamento);
 	}
 }
 

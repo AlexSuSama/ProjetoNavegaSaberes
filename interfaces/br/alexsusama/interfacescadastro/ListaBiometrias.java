@@ -214,7 +214,7 @@ public class ListaBiometrias extends JInternalFrame {
 						ListaBiometrias listaBiometrias = new ListaBiometrias();
 						try {
 							listaBiometrias.repassarBiometrias(saida.resgatarBiometrias(String.valueOf(idPovoamento)),
-							saidaPovoamento.resgatarPovoamento(String.valueOf(idPovoamento)));
+									saidaPovoamento.resgatarPovoamento(String.valueOf(idPovoamento)));
 							Home.repassarTelas(listaBiometrias);
 						} catch (SQLException e) {
 							JOptionPane.showMessageDialog(null, "não foi possível atualizar as telas");
@@ -276,6 +276,7 @@ public class ListaBiometrias extends JInternalFrame {
 
 	}
 
+	// metodo para criar a tabela que vai receber os valores da biometria
 	public void tela() {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 130, 678, 292);

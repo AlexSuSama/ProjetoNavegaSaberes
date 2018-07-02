@@ -16,8 +16,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import br.alexsusama.modelo.Biometria;
+import br.alexsusama.modelo.Comercializacao;
 import br.alexsusama.modelo.Povoamento;
 import br.alexsusama.persisntencia.SaidaEntradaBiometria;
+import br.alexsusama.persisntencia.SaidaEntradaComercializacao;
 import br.alexsusama.persisntencia.SaidaEntradaPovoamento;
 import javax.swing.border.BevelBorder;
 import java.awt.event.ActionListener;
@@ -148,12 +150,13 @@ public class ListaPovoamentos extends JInternalFrame {
 					try {
 						// faz a busca e repassa os valores do banco de dados
 						// para a lista de biometrias
-						
+
 						ListaBiometrias listaBiometrias = new ListaBiometrias();
 						listaBiometrias.repassarBiometrias(saida.resgatarBiometrias(idCapturado),
 								saidaPovoamento.resgatarPovoamento(idCapturado));
 						listaBiometrias.setVisible(true);
-						//metodo criado para passar a tela sem usar as variaveis da tela inicial
+						// metodo criado para passar a tela sem usar as
+						// variaveis da tela inicial
 						Home.repassarTelas(listaBiometrias);
 						dispose();
 					} catch (SQLException e2) {
@@ -190,28 +193,28 @@ public class ListaPovoamentos extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				int confirmacao = JOptionPane.showConfirmDialog(null,"Você tem certeza?");
+				int confirmacao = JOptionPane.showConfirmDialog(null, "Você tem certeza?");
 				switch (confirmacao) {
 				case 0:
 					if (verificarId(idCapturado)) {
 						SaidaEntradaPovoamento saida = new SaidaEntradaPovoamento();
 						saida.excluirPovoamento(idCapturado);
 
-						dispose(); 
+						dispose();
 						ListaPovoamentos povoamentos = new ListaPovoamentos();
 						povoamentos.setVisible(true);
 						Home.repassarTelas(povoamentos);
 
 					} else {
 						JOptionPane.showMessageDialog(null, "você precisa clicar em um povoamento da lista");
-					}	
+					}
 					break;
 
 				default:
 					System.out.println("você decidiu não excluir");
 					break;
 				}
-				
+
 			}
 		});
 
@@ -223,20 +226,54 @@ public class ListaPovoamentos extends JInternalFrame {
 		});
 		btnFechar.setBounds(688, 324, 95, 41);
 		contentPane.add(btnFechar);
-		
+
 		JButton btnNovo = new JButton("Novo");
 		btnNovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-					CadastroPovoamento cadastroPovoamento = new CadastroPovoamento();
-					cadastroPovoamento.setVisible(true);
-					Home.repassarTelas(cadastroPovoamento);
-					dispose();
-			} 
+
+				CadastroPovoamento cadastroPovoamento = new CadastroPovoamento();
+				cadastroPovoamento.setVisible(true);
+				Home.repassarTelas(cadastroPovoamento);
+				dispose();
+			}
 		});
 		btnNovo.setBounds(688, 30, 95, 41);
 		contentPane.add(btnNovo);
-	} 
+
+		JButton btnComercializacao = new JButton("Comercializa\u00E7\u00E3o");
+		btnComercializacao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				SaidaEntradaComercializacao saida = new SaidaEntradaComercializacao();
+
+				SaidaEntradaPovoamento saidaPovoamento = new SaidaEntradaPovoamento();
+
+				if (verificarId(idCapturado)) {
+					try {
+						// faz a busca e repassa os valores do banco de dados
+						// para a lista de biometrias
+
+						ListaComercializacao listaComercializacao = new ListaComercializacao();
+						// tenho que modificar aqui para retornar apenas as
+						// comercializações referentes aquele povoamento
+
+						listaComercializacao.repassarComercializacao(saida.resgatarComercializacoes(idCapturado),saidaPovoamento.resgatarPovoamento(idCapturado));
+					
+						listaComercializacao.setVisible(true);
+						// metodo criado para passar a tela sem usar as
+						// variaveis da tela inicial
+						Home.repassarTelas(listaComercializacao);
+						dispose();
+					} catch (SQLException e2) {
+						// TODO: handle exception
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "você precisa escolher um povoamento primeiro");
+				}
+			}
+		});
+		btnComercializacao.setBounds(688, 282, 95, 41);
+		contentPane.add(btnComercializacao);
+	}
 
 	public boolean verificarId(String idCaturado) {
 		if (idCaturado.equals("")) {

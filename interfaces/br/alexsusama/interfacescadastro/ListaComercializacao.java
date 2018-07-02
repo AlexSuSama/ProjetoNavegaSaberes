@@ -20,8 +20,11 @@ import javax.swing.table.DefaultTableModel;
 
 import br.alexsusama.modelo.Biometria;
 import br.alexsusama.modelo.Comercializacao;
+import br.alexsusama.modelo.Povoamento;
 import br.alexsusama.persisntencia.SaidaEntradaComercializacao;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  * @author AlexSama
@@ -31,8 +34,13 @@ public class ListaComercializacao extends JInternalFrame {
 
 	private JPanel contentPane;
 	private JTable table;
-	List<Comercializacao> comercializacoes;
 	private String idCapturado = "";
+	private JTextField textFieldIDPovoamento;
+	private JTextField textFieldProdutor;
+	private JTextField textFieldMunicipio;
+	private JTextField textFieldLocalidade;
+
+	List<Comercializacao> listComercializacao;
 
 	/**
 	 * Launch the application.
@@ -62,8 +70,102 @@ public class ListaComercializacao extends JInternalFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+		JButton btnNova = new JButton("Nova");
+		btnNova.setBounds(688, 115, 89, 41);
+		btnNova.addActionListener(btnNovo());
+		btnNova.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				CadastroComercializacao tela = new CadastroComercializacao();
+				tela.repassarIdPovoamento(textFieldIDPovoamento.getText().toString());
+				Home.repassarTelas(tela);
+				dispose();
+			}
+		});
+		contentPane.add(btnNova);
+
+		JButton btnEditar = new JButton("Editar");
+		btnEditar.setBounds(688, 167, 89, 41);
+		btnEditar.addActionListener(btnEditar());
+		contentPane.add(btnEditar);
+
+		JButton btnExcluir = new JButton("Excluir");
+		btnExcluir.setBounds(688, 231, 89, 41);
+		btnExcluir.addActionListener(btnExcluir());
+		contentPane.add(btnExcluir);
+
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.ORANGE);
+		panel.setBounds(0, 0, 825, 102);
+		contentPane.add(panel);
+		panel.setLayout(null);
+
+		JLabel lblIdPovoamento = new JLabel("ID Povoamento");
+		lblIdPovoamento.setBounds(10, 11, 92, 14);
+		panel.add(lblIdPovoamento);
+
+		JLabel lblProdutor = new JLabel("Produtor");
+		lblProdutor.setBounds(10, 61, 47, 14);
+		panel.add(lblProdutor);
+
+		textFieldIDPovoamento = new JTextField();
+		textFieldIDPovoamento.setBounds(97, 8, 147, 20);
+		panel.add(textFieldIDPovoamento);
+		textFieldIDPovoamento.setColumns(10);
+
+		textFieldProdutor = new JTextField();
+		textFieldProdutor.setColumns(10);
+		textFieldProdutor.setBounds(97, 58, 147, 20);
+		panel.add(textFieldProdutor);
+
+		JLabel lblMunicpio = new JLabel("Munic\u00EDpio");
+		lblMunicpio.setBounds(265, 11, 71, 14);
+		panel.add(lblMunicpio);
+
+		JLabel lblLocalidade = new JLabel("Localidade");
+		lblLocalidade.setBounds(527, 11, 71, 14);
+		panel.add(lblLocalidade);
+
+		textFieldMunicipio = new JTextField();
+		textFieldMunicipio.setColumns(10);
+		textFieldMunicipio.setBounds(317, 8, 147, 20);
+		panel.add(textFieldMunicipio);
+
+		textFieldLocalidade = new JTextField();
+		textFieldLocalidade.setColumns(10);
+		textFieldLocalidade.setBounds(608, 8, 147, 20);
+		panel.add(textFieldLocalidade);
+		
+		JButton btnSelecioneOPovoamento = new JButton("Selecione o povoamento");
+		btnSelecioneOPovoamento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ListaPovoamentosEstoque listaPovoamentosEstoque = new ListaPovoamentosEstoque();
+				listaPovoamentosEstoque.opcaoDeTela(2);
+				listaPovoamentosEstoque.setVisible(true);
+			}
+		});
+		btnSelecioneOPovoamento.setBounds(608, 57, 166, 41);
+		panel.add(btnSelecioneOPovoamento);
+	}
+	
+	//metodo do btn de nova biometria
+	public ActionListener btnNovo() {
+		return new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				CadastroComercializacao comercializacao = new CadastroComercializacao();
+				comercializacao.setVisible(true);
+			}
+		};
+	}
+
+	public void inializarTela() {
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 26, 678, 339);
+		scrollPane.setBounds(0, 113, 678, 317);
 		contentPane.add(scrollPane);
 
 		table = new JTable();
@@ -96,13 +198,12 @@ public class ListaComercializacao extends JInternalFrame {
 
 		try {
 			SaidaEntradaComercializacao saida = new SaidaEntradaComercializacao();
-			comercializacoes = saida.resgatarComercializacoes();
-			if (comercializacoes != null) {
-				for (Comercializacao a : comercializacoes) {
+			
+			if (listComercializacao != null) {
+				for (Comercializacao a : listComercializacao) {
 					modelo.addRow(new Object[] { a.getIdComercializacao(), a.getNomeComprador(), a.getTipoDeComprador(),
 							a.getValorVenda(), a.getTipoComercializado(), a.getTipoComercializado(), a.getMunicipio(),
 							a.getLocalidade(), });
-
 				}
 			} else {
 				System.out.println("campos nulos");
@@ -112,43 +213,6 @@ public class ListaComercializacao extends JInternalFrame {
 			e.printStackTrace();
 		}
 		scrollPane.setViewportView(table);
-
-		JButton btnNova = new JButton("Nova");
-		btnNova.setBounds(688, 56, 89, 41);
-		btnNova.addActionListener(btnNovo());
-		btnNova.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				CadastroComercializacao tela = new CadastroComercializacao();
-				Home.repassarTelas(tela);
-				dispose();
-			}
-		});
-		contentPane.add(btnNova);
-
-		JButton btnEditar = new JButton("Editar");
-		btnEditar.setBounds(688, 108, 89, 41);
-		btnEditar.addActionListener(btnEditar()); 
-		contentPane.add(btnEditar);
-
-		JButton btnExcluir = new JButton("Excluir");
-		btnExcluir.setBounds(688, 160, 89, 41);
-		btnExcluir.addActionListener(btnExcluir());
-		contentPane.add(btnExcluir);
-	}
-
-	public ActionListener btnNovo() {
-		return new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				CadastroComercializacao comercializacao = new CadastroComercializacao();
-				comercializacao.setVisible(true);
-			}
-		};
 	}
 
 	public ActionListener btnExcluir() {
@@ -190,6 +254,7 @@ public class ListaComercializacao extends JInternalFrame {
 					SaidaEntradaComercializacao entrada = new SaidaEntradaComercializacao();
 					CadastroComercializacao editarCadastro = new CadastroComercializacao();
 					editarCadastro.atualizarCampos(entrada.resgatarComercializacao(idCapturado), false);
+					editarCadastro.repassarIdPovoamento(textFieldIDPovoamento.getText().toString());
 					Home.repassarTelas(editarCadastro);
 					dispose();
 				} else {
@@ -198,6 +263,15 @@ public class ListaComercializacao extends JInternalFrame {
 			}
 		};
 	}
-	
-	
+
+	public void repassarComercializacao(List<Comercializacao> comercializacao, Povoamento povoamento) {
+		
+		textFieldIDPovoamento.setText(String.valueOf(povoamento.getIDPovoamentos()));
+		textFieldLocalidade.setText(povoamento.getLocalidade());
+		textFieldMunicipio.setText(povoamento.getMunicipio());
+		textFieldProdutor.setText(povoamento.getNomeOstricultor());
+		
+		this.listComercializacao = comercializacao;
+		inializarTela();
+	}
 }
