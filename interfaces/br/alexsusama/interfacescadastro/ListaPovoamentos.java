@@ -15,8 +15,7 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import br.alexsusama.modelo.Biometria;
-import br.alexsusama.modelo.Comercializacao;
+
 import br.alexsusama.modelo.Povoamento;
 import br.alexsusama.persisntencia.SaidaEntradaBiometria;
 import br.alexsusama.persisntencia.SaidaEntradaComercializacao;
@@ -26,6 +25,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class ListaPovoamentos extends JInternalFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;
 
@@ -61,7 +65,7 @@ public class ListaPovoamentos extends JInternalFrame {
 		contentPane.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 26, 678, 339);
+		scrollPane.setBounds(0, 26, 678, 368);
 		contentPane.add(scrollPane);
 
 		table = new JTable();
@@ -79,8 +83,8 @@ public class ListaPovoamentos extends JInternalFrame {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					// Exibe o popup menu na posição do mouse.
 					String id = table.getValueAt(table.getSelectedRow(), 0).toString();
-					SaidaEntradaBiometria saida = new SaidaEntradaBiometria();
-					SaidaEntradaPovoamento saidaPovoamento = new SaidaEntradaPovoamento();
+				//	SaidaEntradaBiometria saida = new SaidaEntradaBiometria();
+				//	SaidaEntradaPovoamento saidaPovoamento = new SaidaEntradaPovoamento();
 					try {
 						/*
 						 * ListaBiometrias listaBiometrias = new
@@ -138,7 +142,7 @@ public class ListaPovoamentos extends JInternalFrame {
 				}
 			}
 		});
-		btnEditar.setBounds(688, 74, 95, 41);
+		btnEditar.setBounds(688, 74, 108, 41);
 		contentPane.add(btnEditar);
 
 		JButton btnDetalhes = new JButton("Detalhes");
@@ -167,7 +171,7 @@ public class ListaPovoamentos extends JInternalFrame {
 				}
 			}
 		});
-		btnDetalhes.setBounds(688, 126, 95, 41);
+		btnDetalhes.setBounds(688, 126, 108, 41);
 		contentPane.add(btnDetalhes);
 
 		JButton btnNovaBiometria = new JButton("Nova biometria");
@@ -177,16 +181,17 @@ public class ListaPovoamentos extends JInternalFrame {
 					CadastroBiometrico cadastroBiometrico = new CadastroBiometrico();
 					cadastroBiometrico.atualizarCampos(idCapturado);
 					cadastroBiometrico.setVisible(true);
+					Home.repassarTelas(cadastroBiometrico);
 				} else {
 					JOptionPane.showMessageDialog(null, "você precisa escolher o povoamento primeiro");
 				}
 			}
 		});
-		btnNovaBiometria.setBounds(688, 178, 95, 41);
+		btnNovaBiometria.setBounds(688, 178, 108, 41);
 		contentPane.add(btnNovaBiometria);
 
 		JButton btnExcluir = new JButton("Excluir");
-		btnExcluir.setBounds(688, 230, 95, 41);
+		btnExcluir.setBounds(688, 230, 108, 41);
 		contentPane.add(btnExcluir);
 		btnExcluir.addActionListener(new ActionListener() {
 
@@ -198,6 +203,7 @@ public class ListaPovoamentos extends JInternalFrame {
 				case 0:
 					if (verificarId(idCapturado)) {
 						SaidaEntradaPovoamento saida = new SaidaEntradaPovoamento();
+						System.out.println(idCapturado+" apenas um teste");
 						saida.excluirPovoamento(idCapturado);
 
 						dispose();
@@ -221,10 +227,11 @@ public class ListaPovoamentos extends JInternalFrame {
 		JButton btnFechar = new JButton("Fechar");
 		btnFechar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Home.repassarTelas(new ScreenInit());
 				dispose();
 			}
 		});
-		btnFechar.setBounds(688, 324, 95, 41);
+		btnFechar.setBounds(688, 334, 108, 35);
 		contentPane.add(btnFechar);
 
 		JButton btnNovo = new JButton("Novo");
@@ -237,7 +244,7 @@ public class ListaPovoamentos extends JInternalFrame {
 				dispose();
 			}
 		});
-		btnNovo.setBounds(688, 30, 95, 41);
+		btnNovo.setBounds(688, 26, 108, 41);
 		contentPane.add(btnNovo);
 
 		JButton btnComercializacao = new JButton("Comercializa\u00E7\u00E3o");
@@ -271,7 +278,7 @@ public class ListaPovoamentos extends JInternalFrame {
 				}
 			}
 		});
-		btnComercializacao.setBounds(688, 282, 95, 41);
+		btnComercializacao.setBounds(688, 282, 108, 41);
 		contentPane.add(btnComercializacao);
 	}
 

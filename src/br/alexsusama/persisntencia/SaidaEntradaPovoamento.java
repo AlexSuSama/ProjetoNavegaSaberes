@@ -57,6 +57,7 @@ public class SaidaEntradaPovoamento {
 			ConnectionDB con = new ConnectionDB();
 			PreparedStatement pStatement = con.getConection().prepareStatement(sql);
 			pStatement.setString(1, idPovoamento);
+			
 			int confirmcao = pStatement.executeUpdate();
 			pStatement.close();
 			if (confirmcao == 1) {
@@ -65,7 +66,7 @@ public class SaidaEntradaPovoamento {
 				JOptionPane.showMessageDialog(null, "erro ao excluir povoamento");
 			}
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "erro ao excluir o povoamento");
+			JOptionPane.showMessageDialog(null, "erro ao excluir o povoamento" +e);
 		}
 	}
 

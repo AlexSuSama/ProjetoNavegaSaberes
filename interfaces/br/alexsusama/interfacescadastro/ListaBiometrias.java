@@ -1,6 +1,5 @@
 package br.alexsusama.interfacescadastro;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.sql.SQLException;
 import java.util.List;
@@ -29,6 +28,10 @@ import java.awt.event.ActionEvent;
 
 public class ListaBiometrias extends JInternalFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
 
@@ -36,14 +39,13 @@ public class ListaBiometrias extends JInternalFrame {
 	private JTextField textFieldPovoamento;
 	private JTextField textFieldProdutor;
 	private JTextField textFieldMunicipio;
-	private JTextField textField_3;
+	private JTextField textGrausLate;
 	private JTextField textFieldLocalidade;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField;
+	private JTextField textMinutosLate;
+	private JTextField textSegundosLate;
+	private JTextField textGrausLong;
+	private JTextField textMinutosLong;
+	private JTextField textSegundosLong;
 
 	private String idCapturado = "";
 
@@ -121,11 +123,11 @@ public class ListaBiometrias extends JInternalFrame {
 		textFieldMunicipio.setBounds(291, 8, 144, 20);
 		panel.add(textFieldMunicipio);
 
-		textField_3 = new JTextField();
-		textField_3.setEditable(false);
-		textField_3.setColumns(10);
-		textField_3.setBounds(599, 46, 34, 20);
-		panel.add(textField_3);
+		textGrausLate = new JTextField();
+		textGrausLate.setEditable(false);
+		textGrausLate.setColumns(10);
+		textGrausLate.setBounds(599, 46, 34, 20);
+		panel.add(textGrausLate);
 
 		textFieldLocalidade = new JTextField();
 		textFieldLocalidade.setEditable(false);
@@ -133,35 +135,35 @@ public class ListaBiometrias extends JInternalFrame {
 		textFieldLocalidade.setBounds(547, 8, 227, 20);
 		panel.add(textFieldLocalidade);
 
-		textField_5 = new JTextField();
-		textField_5.setEditable(false);
-		textField_5.setColumns(10);
-		textField_5.setBounds(655, 46, 34, 20);
-		panel.add(textField_5);
+		textMinutosLate = new JTextField();
+		textMinutosLate.setEditable(false);
+		textMinutosLate.setColumns(10);
+		textMinutosLate.setBounds(655, 46, 34, 20);
+		panel.add(textMinutosLate);
 
-		textField_6 = new JTextField();
-		textField_6.setEditable(false);
-		textField_6.setColumns(10);
-		textField_6.setBounds(699, 46, 34, 20);
-		panel.add(textField_6);
+		textSegundosLate = new JTextField();
+		textSegundosLate.setEditable(false);
+		textSegundosLate.setColumns(10);
+		textSegundosLate.setBounds(699, 46, 34, 20);
+		panel.add(textSegundosLate);
 
-		textField_7 = new JTextField();
-		textField_7.setEditable(false);
-		textField_7.setColumns(10);
-		textField_7.setBounds(599, 77, 34, 20);
-		panel.add(textField_7);
+		textGrausLong = new JTextField();
+		textGrausLong.setEditable(false);
+		textGrausLong.setColumns(10);
+		textGrausLong.setBounds(599, 77, 34, 20);
+		panel.add(textGrausLong);
 
-		textField_8 = new JTextField();
-		textField_8.setEditable(false);
-		textField_8.setColumns(10);
-		textField_8.setBounds(655, 77, 34, 20);
-		panel.add(textField_8);
+		textMinutosLong = new JTextField();
+		textMinutosLong.setEditable(false);
+		textMinutosLong.setColumns(10);
+		textMinutosLong.setBounds(655, 77, 34, 20);
+		panel.add(textMinutosLong);
 
-		textField_9 = new JTextField();
-		textField_9.setEditable(false);
-		textField_9.setColumns(10);
-		textField_9.setBounds(699, 77, 34, 20);
-		panel.add(textField_9);
+		textSegundosLong = new JTextField();
+		textSegundosLong.setEditable(false);
+		textSegundosLong.setColumns(10);
+		textSegundosLong.setBounds(699, 77, 34, 20);
+		panel.add(textSegundosLong);
 
 		JLabel lblL = new JLabel("Late");
 		lblL.setBounds(547, 49, 42, 14);
@@ -268,6 +270,7 @@ public class ListaBiometrias extends JInternalFrame {
 		btnFechar.setBounds(698, 389, 89, 41);
 		btnFechar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				Home.repassarTelas(new ListaPovoamentos());
 				dispose();
 			}
 
@@ -305,7 +308,7 @@ public class ListaBiometrias extends JInternalFrame {
 				new String[] { "ID", "Coleta", "Total", "Unidades mortas", "Sistema", "Sobreviv\u00EAncia",
 						"Mortalidade", "M\u00E9dia", "Salinidade", "	Temperatura", "Est\u00E1gio" }));
 		DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-		SaidaEntradaPovoamento resgatar = new SaidaEntradaPovoamento();
+		//SaidaEntradaPovoamento resgatar = new SaidaEntradaPovoamento();
 		try {
 			if (biometrias != null) {
 				for (Biometria a : biometrias) {
@@ -331,6 +334,14 @@ public class ListaBiometrias extends JInternalFrame {
 		textFieldPovoamento.setText(String.valueOf(povoamento.getIDPovoamentos()));
 		textFieldProdutor.setText(povoamento.getNomeOstricultor());
 		idPovoamento = povoamento.getIDPovoamentos();
+		textGrausLate.setText(String.valueOf(povoamento.getGrausLat()));
+		textMinutosLate.setText(String.valueOf(povoamento.getMinutosLat()));
+		textSegundosLate.setText(String.valueOf(povoamento.getSegundosLat()));
+		
+		textGrausLong.setText(String.valueOf(povoamento.getGrausLong()));
+		textMinutosLong.setText(String.valueOf(povoamento.getMinutosLong()));
+		textSegundosLong.setText(String.valueOf(povoamento.getSegundosLong()));
+		
 		this.biometrias = bio;
 
 		// invoca o método para criar a lista de biometrias

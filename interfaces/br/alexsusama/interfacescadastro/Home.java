@@ -12,6 +12,7 @@ import java.awt.Color;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import java.awt.event.ActionListener;
@@ -19,6 +20,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 import javax.swing.UIManager;
 
 public class Home extends JFrame {
@@ -36,6 +42,7 @@ public class Home extends JFrame {
 	static GraficosBiometricos graficosBiometricos;
 	static TelaDeEstoque telaDeEstoque;
 	static EscolhaGrafico escolhaGrafico;
+	static TelaRelatorio telaDeRelatorio;
 
 	// variaveis que controlam a tela que vai ser exibida
 	static int TELACADASTROBIOMETRICO = 1;
@@ -48,6 +55,7 @@ public class Home extends JFrame {
 	static int TELADEGRAFICOSBIOMETRICOS = 7;
 	static int TELADEESTOQUE = 8;
 	static int TELAESCOLHAGRAFICO = 9;
+	static int TELADERELATORIO = 10;
 
 	private JPanel contentPane;
 	static JDesktopPane desktopPane = new JDesktopPane();
@@ -81,18 +89,19 @@ public class Home extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1041, 679);
 
-		// btn e indicadores
+		// btn
 		JPanel btnGraficos = new JPanel();
 		JPanel btnPovoamentos = new JPanel();
 		JPanel btnComercializacao = new JPanel();
-		//btnComercializacao.setVisible(false);
 		JPanel btnEstoque = new JPanel();
-
+		JPanel btnRelatorio = new JPanel();
+		//indicadores
 		JPanel indPovoamentos = new JPanel();
 		JPanel indComercializacao = new JPanel();
 		JPanel indGraficos = new JPanel();
 		JPanel indEstoque = new JPanel();
-
+		JPanel indRelatorio = new JPanel();
+		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(new Color(0, 128, 128));
 		setJMenuBar(menuBar);
@@ -160,27 +169,39 @@ public class Home extends JFrame {
 
 		JPanel panel_6 = new JPanel();
 		panel_6.setBackground(new Color(173, 216, 230));
-		panel_6.setBounds(10, 530, 1005, 78);
+		panel_6.setBounds(10, 530, 1005, 89);
 		contentPane.add(panel_6);
 		panel_6.setLayout(null);
 
 		JLabel labelAgromar = new JLabel("");
-		labelAgromar.setBounds(852, 11, 55, 56);
-		Image imgAgromar = new ImageIcon(this.getClass().getResource("/agromar.png")).getImage();
-		labelAgromar.setIcon(new ImageIcon(imgAgromar));
+		labelAgromar.setIcon(new ImageIcon(Home.class.getResource("/br/alexsusama/imagens/agromar.png")));
+		labelAgromar.setBounds(926, 22, 55, 56);
+		//Image imgAgromar = new ImageIcon(this.getClass().getResource("/agromar.png")).getImage();
+		//labelAgromar.setIcon(new ImageIcon(imgAgromar));
 		panel_6.add(labelAgromar);
-
+ 
 		JLabel labelUfpa = new JLabel("");
-		labelUfpa.setBounds(764, 11, 55, 56);
-		Image imgUfpa = new ImageIcon(this.getClass().getResource("/ufpalogo.png")).getImage();
-		labelUfpa.setIcon(new ImageIcon(imgUfpa));
+		labelUfpa.setIcon(new ImageIcon(Home.class.getResource("/br/alexsusama/imagens/logoUfpa.png")));
+		labelUfpa.setBounds(843, 11, 55, 67);
+		
+		//Image imgUfpa = new ImageIcon(this.getClass().getResource("/ufpalogo.png")).getImage();
+		//labelUfpa.setIcon(new ImageIcon(imgUfpa));
 		panel_6.add(labelUfpa);
 
 		JLabel labelProex = new JLabel("");
-		labelProex.setBounds(646, 25, 113, 42);
-		Image imgProex = new ImageIcon(this.getClass().getResource("/proexlogo.png")).getImage();
-		labelProex.setIcon(new ImageIcon(imgProex));
+		labelProex.setIcon(new ImageIcon(Home.class.getResource("/br/alexsusama/imagens/proexlogo.png")));
+		labelProex.setBounds(720, 22, 113, 42);
+		//Image imgProex = new ImageIcon(this.getClass().getResource("/proexlogo.png")).getImage();
+		//labelProex.setIcon(new ImageIcon(imgProex));
 		panel_6.add(labelProex);
+		
+		JLabel lblDensenvolvimento = new JLabel("Densenvolvimento");
+		lblDensenvolvimento.setBounds(720, 11, 102, 14);
+		panel_6.add(lblDensenvolvimento);
+		
+		JLabel lblParceria = new JLabel("Parceria");
+		lblParceria.setBounds(926, 11, 55, 14);
+		panel_6.add(lblParceria);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(30, 144, 255));
@@ -194,8 +215,8 @@ public class Home extends JFrame {
 				trocaDeJanelas(TELALISTADEPOVOAMENTOS);
 				setColor(btnPovoamentos);
 				indPovoamentos.setOpaque(true);
-				resetColor(new JPanel[] { btnComercializacao, btnEstoque, btnGraficos },
-						new JPanel[] { indComercializacao, indEstoque, indGraficos });
+				resetColor(new JPanel[] { btnComercializacao, btnEstoque, btnGraficos,btnRelatorio },
+						new JPanel[] { indComercializacao, indEstoque, indGraficos, indRelatorio });
 			}
 		});
 		btnPovoamentos.setBounds(10, 50, 170, 47);
@@ -212,7 +233,24 @@ public class Home extends JFrame {
 		btnPovoamentos.add(indPovoamentos);
 
 		JLabel label_5 = new JLabel("");
-		label_5.setIcon(new ImageIcon("C:\\Users\\AlexSama\\Documents\\Projeto navega saberes\\icone menor.png"));
+		label_5.setIcon(new ImageIcon(Home.class.getResource("/br/alexsusama/imagens/icone menor.png")));
+		//Image imgBiometria = new ImageIcon(this.getClass().getResource("/imagens/iconePovoamentoMenu.png")).getImage();
+
+		String diretorio = "/br/alexsusama/imagens/iconePovoamentoMenu.png";
+	
+		/*URL resource = getClass().getResource(diretorio);
+         try {
+			File file = new File(resource.toURI());
+			ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+			
+			label_5.setIcon(icon);
+			
+         } catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+         //label_5.setIcon(new ImageIcon(imgBiometria));
 		label_5.setBounds(10, 0, 46, 47);
 		btnPovoamentos.add(label_5);
 
@@ -222,8 +260,8 @@ public class Home extends JFrame {
 				trocaDeJanelas(TELALISTADECOMERCIALIZACAO);
 				setColor(btnComercializacao);
 				indComercializacao.setOpaque(true);
-				resetColor(new JPanel[] { btnPovoamentos, btnEstoque, btnGraficos },
-						new JPanel[] { indEstoque, indPovoamentos, indGraficos });
+				resetColor(new JPanel[] { btnPovoamentos, btnEstoque, btnGraficos,btnRelatorio },
+						new JPanel[] { indEstoque, indPovoamentos, indGraficos, indRelatorio });
 			}
 		});
 		btnComercializacao.setBounds(10, 282, 170, 47);
@@ -240,8 +278,9 @@ public class Home extends JFrame {
 		btnComercializacao.add(indComercializacao);
 
 		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon(
-				"C:\\Users\\AlexSama\\eclipse-workspace\\ProjetoNavegaSaberes\\imgs\\icons8-d\u00F3lar-americano-40.png"));
+		label.setIcon(new ImageIcon(Home.class.getResource("/br/alexsusama/imagens/iconeComercializacaoMenu.png")));
+		//Image imgComercializacao = new ImageIcon(this.getClass().getResource("/icone-comercializacao.png")).getImage();
+		//label.setIcon(new ImageIcon(imgComercializacao));
 		label.setBounds(10, 0, 46, 47);
 		btnComercializacao.add(label);
 
@@ -251,8 +290,8 @@ public class Home extends JFrame {
 				trocaDeJanelas(TELADEESTOQUE);
 				setColor(btnEstoque);
 				indEstoque.setOpaque(true);
-				resetColor(new JPanel[] { btnComercializacao, btnGraficos, btnPovoamentos },
-						new JPanel[] { indComercializacao, indGraficos, indPovoamentos });
+				resetColor(new JPanel[] { btnComercializacao, btnGraficos, btnPovoamentos,btnRelatorio },
+						new JPanel[] { indComercializacao, indGraficos, indPovoamentos,indRelatorio });
 			}
 		});
 		btnEstoque.setBounds(10, 108, 170, 47);
@@ -269,8 +308,9 @@ public class Home extends JFrame {
 		btnEstoque.add(indEstoque);
 
 		JLabel label_1 = new JLabel("");
-		label_1.setIcon(new ImageIcon(
-				"C:\\Users\\AlexSama\\eclipse-workspace\\ProjetoNavegaSaberes\\imgs\\icons8-caixa-40.png"));
+		label_1.setIcon(new ImageIcon(Home.class.getResource("/br/alexsusama/imagens/iconeEstoqueMenu.png")));
+		//Image imgEstoque = new ImageIcon(this.getClass().getResource("/icone-estoque.png")).getImage();
+		//label_1.setIcon(new ImageIcon(imgEstoque));
 		label_1.setBounds(10, 0, 46, 47);
 		btnEstoque.add(label_1);
 
@@ -280,8 +320,8 @@ public class Home extends JFrame {
 				trocaDeJanelas(TELAESCOLHAGRAFICO);
 				setColor(btnGraficos);
 				indGraficos.setOpaque(true);
-				resetColor(new JPanel[] { btnComercializacao, btnEstoque, btnPovoamentos },
-						new JPanel[] { indComercializacao, indEstoque, indPovoamentos });
+				resetColor(new JPanel[] { btnComercializacao, btnEstoque, btnPovoamentos,btnRelatorio },
+						new JPanel[] { indComercializacao, indEstoque, indPovoamentos,indRelatorio });
 
 			}
 		});
@@ -299,15 +339,18 @@ public class Home extends JFrame {
 		btnGraficos.add(indGraficos);
 
 		JLabel label_2 = new JLabel("");
-		label_2.setIcon(new ImageIcon(
-				"C:\\Users\\AlexSama\\eclipse-workspace\\ProjetoNavegaSaberes\\imgs\\icons8-gr\u00E1fico-combinado-48.png"));
+		label_2.setIcon(new ImageIcon(Home.class.getResource("/br/alexsusama/imagens/iconeGraficoMenu.png")));
+		//Image imgGrafico = new ImageIcon(this.getClass().getResource("/icone-graficos.png")).getImage();
+		//label_2.setIcon(new ImageIcon(imgGrafico));
 		label_2.setBounds(7, 0, 46, 47);
 		btnGraficos.add(label_2);
 
 		JPanel panel_5 = new JPanel();
+		panel_5.setBackground(new Color(211, 211, 211));
 		panel_5.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+			
 				dispose();
 			}
 		});
@@ -318,44 +361,58 @@ public class Home extends JFrame {
 		lblSair.setBackground(Color.LIGHT_GRAY);
 		panel_5.add(lblSair);
 
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setBounds(10, 224, 170, 47);
-		panel.add(panel_1);
+		
+		btnRelatorio.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				trocaDeJanelas(TELADERELATORIO);
+				setColor(btnRelatorio);
+				indRelatorio.setOpaque(true);
+				resetColor(new JPanel[] { btnPovoamentos, btnEstoque, btnGraficos,btnComercializacao},
+						new JPanel[] { indEstoque, indPovoamentos, indGraficos,indComercializacao });
+			}
+		});
+		btnRelatorio.setLayout(null);
+		btnRelatorio.setBounds(10, 224, 170, 47);
+		panel.add(btnRelatorio);
 
 		JLabel lblRelatrio = new JLabel("Relat\u00F3rio");
 		lblRelatrio.setBackground(Color.LIGHT_GRAY);
 		lblRelatrio.setBounds(64, 11, 81, 16);
-		panel_1.add(lblRelatrio);
-
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(Color.LIGHT_GRAY);
-		panel_2.setBounds(0, 0, 4, 47);
-		panel_1.add(panel_2);
+		btnRelatorio.add(lblRelatrio);
+		
+		indRelatorio.setBackground(Color.LIGHT_GRAY);
+		indRelatorio.setBounds(0, 0, 4, 47);
+		btnRelatorio.add(indRelatorio);
 
 		JLabel label_6 = new JLabel("");
-		label_6.setIcon(
-				new ImageIcon("C:\\Users\\AlexSama\\Documents\\Projeto navega saberes\\iconeRelat\u00F3rio.png"));
+		label_6.setIcon(new ImageIcon(Home.class.getResource("/br/alexsusama/imagens/iconeRelat\u00F3rioMenu.png")));
+		//Image imgRelatorio = new ImageIcon(this.getClass().getResource("/icone-relatorio.png")).getImage();
+		//label_6.setIcon(new ImageIcon(imgRelatorio));
 		label_6.setBounds(8, 0, 46, 47);
-		panel_1.add(label_6);
+		btnRelatorio.add(label_6);
 
 		desktopPane.setBounds(210, 40, 805, 479);
-		contentPane.add(desktopPane);
+		contentPane.add(desktopPane); 
 		desktopPane.setLayout(new BorderLayout(0, 0));
 
 		JLabel label_4 = new JLabel("");
-		label_4.setIcon(new ImageIcon("C:\\Users\\AlexSama\\Documents\\Projeto navega saberes\\ostra.png"));
+		label_4.setIcon(new ImageIcon(Home.class.getResource("/br/alexsusama/imagens/ostraInit.png")));
+		//Image imgOstraLogo = new ImageIcon(this.getClass().getResource("/ostra.png")).getImage();
+		//label_4.setIcon(new ImageIcon(imgOstraLogo));
 		desktopPane.add(label_4, BorderLayout.CENTER);
 
 		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(new Color(244, 242, 232));
+		panel_3.setBackground(new Color(175, 238, 238));
 		panel_3.setBounds(10, 0, 1005, 37);
 		contentPane.add(panel_3);
 		panel_3.setLayout(new BorderLayout(0, 0));
 
 		JLabel label_3 = new JLabel("");
+		label_3.setIcon(new ImageIcon(Home.class.getResource("/br/alexsusama/imagens/top.png")));
 		label_3.setBackground(new Color(244, 242, 232));
-		label_3.setIcon(new ImageIcon("C:\\Users\\AlexSama\\Documents\\Projeto navega saberes\\top.png"));
+		//Image imgTop = new ImageIcon(this.getClass().getResource("/top.png")).getImage();
+		//label_3.setIcon(new ImageIcon(imgTop));
 		panel_3.add(label_3, BorderLayout.CENTER);
 	}
 
@@ -484,6 +541,25 @@ public class Home extends JFrame {
 				escolhaGrafico.moveToFront();
 			}
 			break;
+		case 10:
+			if (telaDeRelatorio == null) {
+				telaDeRelatorio = new TelaRelatorio();
+				// estou tirando esse método para que possa ser inicializada
+				// apenas a tela sem nenhuma informação
+				// telaDeEstoque.preencherCampos("");
+				desktopPane.add(telaDeRelatorio);
+				telaDeRelatorio.setVisible(true);
+			} else {
+				telaDeRelatorio.dispose();
+				telaDeRelatorio = new TelaRelatorio();
+				// estou tirando esse método para que possa ser inicializada
+				// apenas a tela sem nenhuma informação
+				// telaDeEstoque.preencherCampos("");
+				desktopPane.add(telaDeRelatorio);
+				telaDeRelatorio.setVisible(true);
+				telaDeRelatorio.moveToFront();
+			}
+			break;
 		default:
 			break;
 		}
@@ -505,7 +581,7 @@ public class Home extends JFrame {
 
 	// teste para mudar de cor
 	private void setColor(JPanel pane) {
-		pane.setBackground(new Color(41, 57, 200));
+		pane.setBackground(new Color(95, 107, 215));
 	}
 
 	private void resetColor(JPanel[] pane, JPanel[] indicators) {

@@ -20,7 +20,6 @@ import javax.swing.JFormattedTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 public class CadastroPovoamento extends JInternalFrame {
@@ -137,6 +136,7 @@ public class CadastroPovoamento extends JInternalFrame {
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				Home.repassarTelas(new ListaPovoamentos());
 				dispose();
 			}
 		});
@@ -251,7 +251,7 @@ public class CadastroPovoamento extends JInternalFrame {
 		JLabel label_7 = new JLabel("*");
 		label_7.setBounds(23, 96, 13, 14);
 		contentPane.add(label_7);
-
+ 
 		JLabel label_8 = new JLabel("*");
 		label_8.setBounds(23, 133, 13, 14);
 		contentPane.add(label_8);

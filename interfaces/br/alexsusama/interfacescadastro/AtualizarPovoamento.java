@@ -7,7 +7,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
 import br.alexsusama.modelo.Povoamento;
-import br.alexsusama.persisntencia.SaidaEntradaPovoamento;
+//import br.alexsusama.persisntencia.SaidaEntradaPovoamento;
 import br.alexsusama.validacoes.RestricoesDeValores;
 import br.alexsusama.validacoes.ValidacaoDeDatas;
 
@@ -17,10 +17,14 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
+//import java.util.Calendar;
 import java.awt.event.ActionEvent;
 
 public class AtualizarPovoamento extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textFieldID;
 	private JTextField textFieldNomeOstricultor;
@@ -290,7 +294,7 @@ public class AtualizarPovoamento extends JFrame {
 					// variaveis que é possivel não ter
 					povoamento1.setGrausLat(latiGraus);
 					povoamento1.setMinutosLat(latiMinutos);
-					povoamento1.setSegundosLat(latiSegundos);
+					povoamento1.setSegundosLat(latiSegundos); 
 
 					povoamento1.setGrausLong(longGraus);
 					povoamento1.setMinutosLong(longMinutos);
@@ -298,7 +302,7 @@ public class AtualizarPovoamento extends JFrame {
 
 					// povoamento1.printarPovoamento();
 					povoamento1.editarPovoamentos(id);
-
+					dispose();
 				} else {
 					JOptionPane.showMessageDialog(null, "Algum campo obrigatório não foi preenchido corretamente!");
 				}

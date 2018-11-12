@@ -18,7 +18,6 @@ import java.awt.Component;
 import javax.swing.ScrollPaneConstants;
 import java.awt.Color;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JFormattedTextField;
@@ -34,10 +33,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
-import javax.swing.JList;
 import javax.swing.JTextField;
 
 public class GraficosBiometricos extends JInternalFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JFormattedTextField textDataInicial;
 	JFormattedTextField textDataFinal;
 	int controladorGrafico = 0;
@@ -70,7 +72,7 @@ public class GraficosBiometricos extends JInternalFrame {
 	public GraficosBiometricos() {
 		setTitle("Gr\u00E1ficos biom\u00E9tricos");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 473);
+		setBounds(100, 100, 767, 473);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -78,7 +80,7 @@ public class GraficosBiometricos extends JInternalFrame {
 
 		JScrollPane scrollPane = new JScrollPane((Component) null, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(54, 79, 682, 309);
+		scrollPane.setBounds(28, 79, 682, 309);
 		contentPane.add(scrollPane);
 
 		JPanel panel = new JPanel();
@@ -91,12 +93,12 @@ public class GraficosBiometricos extends JInternalFrame {
 
 		JLabel label = new JLabel("Selecione o Per\u00EDodo");
 		label.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		label.setBounds(314, 54, 119, 14);
+		label.setBounds(272, 54, 119, 14);
 		contentPane.add(label);
 		try {
 			MaskFormatter mascara = new MaskFormatter("##-##-####");
 			textDataInicial = new JFormattedTextField(mascara);
-			textDataInicial.setBounds(443, 48, 108, 20);
+			textDataInicial.setBounds(401, 48, 108, 20);
 			contentPane.add(textDataInicial);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -104,12 +106,12 @@ public class GraficosBiometricos extends JInternalFrame {
 
 		JLabel label_1 = new JLabel("at\u00E9");
 		label_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		label_1.setBounds(581, 54, 24, 14);
+		label_1.setBounds(537, 54, 24, 14);
 		contentPane.add(label_1);
 		try {
 			MaskFormatter mascara = new MaskFormatter("##-##-####");
 			textDataFinal = new JFormattedTextField((mascara));
-			textDataFinal.setBounds(628, 48, 108, 20);
+			textDataFinal.setBounds(602, 48, 108, 20);
 			contentPane.add(textDataFinal);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -117,12 +119,12 @@ public class GraficosBiometricos extends JInternalFrame {
 
 		JButton btnBuscar = new JButton("Buscar");
 
-		btnBuscar.setBounds(685, 409, 89, 23);
+		btnBuscar.setBounds(621, 399, 89, 37);
 		btnBuscar.addActionListener(gerarGrafico());
 		contentPane.add(btnBuscar);
 
 		JRadioButton radioButtonCrescimento = new JRadioButton("Crescimento");
-		radioButtonCrescimento.setBounds(54, 395, 109, 23);
+		radioButtonCrescimento.setBounds(123, 395, 109, 23);
 		radioButtonCrescimento.addActionListener(new ActionListener() {
 
 			@Override
@@ -142,7 +144,7 @@ public class GraficosBiometricos extends JInternalFrame {
 
 			}
 		});
-		radioButtonTotal.setBounds(286, 397, 109, 23);
+		radioButtonTotal.setBounds(355, 397, 109, 23);
 		contentPane.add(radioButtonTotal);
 
 		JRadioButton radioButtonAmbiente = new JRadioButton("Ambiente");
@@ -153,7 +155,7 @@ public class GraficosBiometricos extends JInternalFrame {
 
 			}
 		});
-		radioButtonAmbiente.setBounds(165, 395, 109, 23);
+		radioButtonAmbiente.setBounds(234, 395, 109, 23);
 		contentPane.add(radioButtonAmbiente);
 
 		JRadioButton radioButtonMortalidade = new JRadioButton("Mortalidade");
@@ -164,7 +166,7 @@ public class GraficosBiometricos extends JInternalFrame {
 
 			}
 		});
-		radioButtonMortalidade.setBounds(397, 395, 109, 23);
+		radioButtonMortalidade.setBounds(466, 395, 109, 23);
 		contentPane.add(radioButtonMortalidade);
 
 		ButtonGroup groupRadio = new ButtonGroup();
@@ -181,7 +183,7 @@ public class GraficosBiometricos extends JInternalFrame {
 				dispose();
 			}
 		});
-		btnVoltar.setBounds(574, 409, 89, 23);
+		btnVoltar.setBounds(28, 395, 89, 37);
 		contentPane.add(btnVoltar);
 		
 		JButton btnSelecionarPovoamento = new JButton("Selecionar Povoamento");
@@ -193,17 +195,17 @@ public class GraficosBiometricos extends JInternalFrame {
 			
 			}
 		}); 
-		btnSelecionarPovoamento.setBounds(54, 6, 150, 37);
+		btnSelecionarPovoamento.setBounds(28, 0, 175, 43);
 		contentPane.add(btnSelecionarPovoamento);
 		
 		JLabel lblPovoamento = new JLabel("Povoamento");
 		lblPovoamento.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblPovoamento.setBounds(531, 6, 109, 14);
+		lblPovoamento.setBounds(28, 54, 109, 14);
 		contentPane.add(lblPovoamento);
 		
 		textFieldPovoamento = new JTextField(); 
 		textFieldPovoamento.setEditable(false);
-		textFieldPovoamento.setBounds(650, 6, 86, 20);
+		textFieldPovoamento.setBounds(117, 48, 86, 20);
 		contentPane.add(textFieldPovoamento);
 		textFieldPovoamento.setColumns(10);
 

@@ -29,13 +29,17 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JRadioButton;
+import java.awt.Font;
 
 public class GraficosEstoque extends JInternalFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textFieldIDPovoamento;
 	JFormattedTextField formattedTextFieldDataInicial;
@@ -85,10 +89,11 @@ public class GraficosEstoque extends JInternalFrame {
 		panel.add(labelGraficos);
 
 		JLabel lblAt = new JLabel("at\u00E9");
+		lblAt.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblAt.setBounds(596, 48, 34, 14);
 		contentPane.add(lblAt);
 
-		JButton btnNewButton = new JButton("Selecione o Povoamento");
+		JButton btnNewButton = new JButton("Selecionar povoamento");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ListaPovoamentosEstoque listaPovoamentosEstoque = new ListaPovoamentosEstoque();
@@ -96,12 +101,12 @@ public class GraficosEstoque extends JInternalFrame {
 				listaPovoamentosEstoque.setVisible(true);
 			}
 		});
-		btnNewButton.setBounds(20, 11, 163, 40);
+		btnNewButton.setBounds(20, 1, 163, 40);
 		contentPane.add(btnNewButton);
 
 		textFieldIDPovoamento = new JTextField();
 		textFieldIDPovoamento.setEditable(false);
-		textFieldIDPovoamento.setBounds(616, 11, 86, 20);
+		textFieldIDPovoamento.setBounds(96, 45, 86, 20);
 		contentPane.add(textFieldIDPovoamento);
 		textFieldIDPovoamento.setColumns(10);
 		try {
@@ -120,7 +125,8 @@ public class GraficosEstoque extends JInternalFrame {
 			contentPane.add(formattedTextFieldDataFinal);
 
 			JLabel lblPovoamento = new JLabel("Povoamento");
-			lblPovoamento.setBounds(500, 11, 97, 14);
+			lblPovoamento.setFont(new Font("Tahoma", Font.PLAIN, 13));
+			lblPovoamento.setBounds(20, 47, 97, 14);
 			contentPane.add(lblPovoamento);
 
 			JButton btnBuscar = new JButton("Buscar");
@@ -241,6 +247,11 @@ public class GraficosEstoque extends JInternalFrame {
 			});
 			group.add(rdbtnApetrechos);
 			contentPane.add(rdbtnApetrechos);
+			
+			JLabel lblSelecioneOPerodo = new JLabel("Selecione o per\u00EDodo:");
+			lblSelecioneOPerodo.setFont(new Font("Tahoma", Font.PLAIN, 13));
+			lblSelecioneOPerodo.setBounds(348, 48, 135, 14);
+			contentPane.add(lblSelecioneOPerodo);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

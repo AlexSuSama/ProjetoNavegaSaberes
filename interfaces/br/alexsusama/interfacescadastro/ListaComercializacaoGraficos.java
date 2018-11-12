@@ -1,6 +1,5 @@
 package br.alexsusama.interfacescadastro;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -18,7 +17,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import br.alexsusama.modelo.Biometria;
 import br.alexsusama.modelo.Comercializacao;
 import br.alexsusama.modelo.Povoamento;
 import br.alexsusama.persisntencia.SaidaEntradaComercializacao;
@@ -32,6 +30,10 @@ import javax.swing.JTextField;
  */
 public class ListaComercializacaoGraficos extends JInternalFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
 	private String idCapturado = "";
@@ -186,7 +188,7 @@ public class ListaComercializacaoGraficos extends JInternalFrame {
 		DefaultTableModel modelo = (DefaultTableModel) table.getModel();
 
 		try {
-			SaidaEntradaComercializacao saida = new SaidaEntradaComercializacao();
+			//SaidaEntradaComercializacao saida = new SaidaEntradaComercializacao();
 			
 			if (listComercializacao != null) {
 				for (Comercializacao a : listComercializacao) {

@@ -1,6 +1,5 @@
 package br.alexsusama.interfacescadastro;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
@@ -18,16 +18,21 @@ import br.alexsusama.modelo.GeradorDePDF;
 import br.alexsusama.modelo.Povoamento;
 import br.alexsusama.validacoes.ValidacaoDeDatas;
 
-import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 
-public class TelaRelatorio extends JFrame {
+public class TelaRelatorio extends JInternalFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textFieldIDPovoamento;
 	private JTextField textFieldProdutorNome;
@@ -47,7 +52,7 @@ public class TelaRelatorio extends JFrame {
 	private int relatorioParcialComercialiazacaoAmbiente = 4;
 	private int relatorioParcialComercializacao = 5;
 	private int relatorioParcialAmbiente = 6;
-	private int relatorioCompletoBiometria = 7;
+	private int relatorioParcialBiometria = 7;
 	// private boolean biometria = false;
 	// private boolean comercilizacao = false;
 	// private boolean ambiente = false;
@@ -82,7 +87,7 @@ public class TelaRelatorio extends JFrame {
 	 */
 	public TelaRelatorio() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 676, 465);
+		setBounds(100, 100, 800, 465);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -104,6 +109,7 @@ public class TelaRelatorio extends JFrame {
 		contentPane.add(lblPovoamento);
 
 		textFieldIDPovoamento = new JTextField();
+		textFieldIDPovoamento.setEditable(false);
 		textFieldIDPovoamento.setBounds(96, 73, 86, 20);
 		contentPane.add(textFieldIDPovoamento);
 		textFieldIDPovoamento.setColumns(10);
@@ -113,6 +119,7 @@ public class TelaRelatorio extends JFrame {
 		contentPane.add(lblProdutor);
 
 		textFieldProdutorNome = new JTextField();
+		textFieldProdutorNome.setEditable(false);
 		textFieldProdutorNome.setColumns(10);
 		textFieldProdutorNome.setBounds(96, 115, 201, 20);
 		contentPane.add(textFieldProdutorNome);
@@ -122,31 +129,37 @@ public class TelaRelatorio extends JFrame {
 		contentPane.add(lblCoordenadas);
 
 		textFieldGrausLat = new JTextField();
+		textFieldGrausLat.setEditable(false);
 		textFieldGrausLat.setColumns(10);
 		textFieldGrausLat.setBounds(96, 160, 86, 20);
 		contentPane.add(textFieldGrausLat);
 
 		textFieldMinutosLat = new JTextField();
+		textFieldMinutosLat.setEditable(false);
 		textFieldMinutosLat.setColumns(10);
 		textFieldMinutosLat.setBounds(211, 160, 86, 20);
 		contentPane.add(textFieldMinutosLat);
 
 		textFieldSegundosLat = new JTextField();
+		textFieldSegundosLat.setEditable(false);
 		textFieldSegundosLat.setColumns(10);
 		textFieldSegundosLat.setBounds(314, 160, 86, 20);
 		contentPane.add(textFieldSegundosLat);
 
 		textFieldGrausLog = new JTextField();
+		textFieldGrausLog.setEditable(false);
 		textFieldGrausLog.setColumns(10);
 		textFieldGrausLog.setBounds(96, 193, 86, 20);
 		contentPane.add(textFieldGrausLog);
 
 		textFieldMinutosLog = new JTextField();
+		textFieldMinutosLog.setEditable(false);
 		textFieldMinutosLog.setColumns(10);
 		textFieldMinutosLog.setBounds(211, 193, 86, 20);
 		contentPane.add(textFieldMinutosLog);
 
 		textFieldSegundosLog = new JTextField();
+		textFieldSegundosLog.setEditable(false);
 		textFieldSegundosLog.setColumns(10);
 		textFieldSegundosLog.setBounds(314, 193, 86, 20);
 		contentPane.add(textFieldSegundosLog);
@@ -202,6 +215,7 @@ public class TelaRelatorio extends JFrame {
 		contentPane.add(lblLocalidade);
 
 		textFieldLocalidade = new JTextField();
+		textFieldLocalidade.setEditable(false);
 		textFieldLocalidade.setColumns(10);
 		textFieldLocalidade.setBounds(388, 115, 201, 20);
 		contentPane.add(textFieldLocalidade);
@@ -215,11 +229,12 @@ public class TelaRelatorio extends JFrame {
 		contentPane.add(lblLongitude);
 
 		JButton btnGerar = new JButton("Gerar");
-		btnGerar.setBounds(541, 362, 109, 51);
+		btnGerar.setBounds(650, 357, 109, 51);
 		btnGerar.addActionListener(gerarPDF("local"));
 		contentPane.add(btnGerar);
 
 		textFieldMunicipio = new JTextField();
+		textFieldMunicipio.setEditable(false);
 		textFieldMunicipio.setColumns(10);
 		textFieldMunicipio.setBounds(388, 73, 201, 20);
 		contentPane.add(textFieldMunicipio);
@@ -230,14 +245,17 @@ public class TelaRelatorio extends JFrame {
 
 		textFieldCaminho = new JTextField();
 		textFieldCaminho.setColumns(10);
-		textFieldCaminho.setBounds(287, 11, 302, 20);
+		textFieldCaminho.setBounds(287, 11, 403, 20);
 		contentPane.add(textFieldCaminho);
 
 		lblCaminho = new JLabel("Caminho");
 		lblCaminho.setBounds(211, 11, 76, 14);
 		contentPane.add(lblCaminho);
 
-		JButton btnPasta = new JButton("Pasta");
+		JButton btnPasta = new JButton("");
+		btnPasta.setIcon(new ImageIcon(TelaRelatorio.class.getResource("/br/alexsusama/imagens/iconePasta.png")));
+		//java.awt.Image imgIconePasta = new ImageIcon(this.getClass().getResource("/pasta.png")).getImage();
+		//btnPasta.setIcon(new ImageIcon(imgIconePasta));
 		btnPasta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser file = new JFileChooser();
@@ -251,13 +269,22 @@ public class TelaRelatorio extends JFrame {
 				}
 			}
 		});
-		btnPasta.setBounds(599, 11, 59, 39);
+		btnPasta.setBounds(700, 2, 59, 39);
 		contentPane.add(btnPasta);
+		
+		JButton buttonCancelar = new JButton("Cancelar");
+		buttonCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Home.repassarTelas(new TelaRelatorio());
+			}
+		});
+		buttonCancelar.setBounds(474, 357, 109, 51);
+		contentPane.add(buttonCancelar);
 	}
 
 	public ActionListener gerarPDF(String local) {
 		return new ActionListener() {
-
+ 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -265,7 +292,7 @@ public class TelaRelatorio extends JFrame {
 				String dataInicial = textFieldDataInicial.getText().toString();
 				String dataFinal = textFieldDataFinal.getText().toString();
 
-				if (ValidacaoDeDatas.verificarData(dataInicial, dataFinal)) {
+				if (ValidacaoDeDatas.verificarData(dataInicial, dataFinal) && !(textFieldCaminho.getText().equals(""))) {
 					if (rdbtnAmbiente.isSelected() && rdbtnComercializacao.isSelected()
 							&& rdbtnBiometrias.isSelected()) {
 						System.out.println("vai gerar o relatório completo");
@@ -273,7 +300,7 @@ public class TelaRelatorio extends JFrame {
 						GeradorDePDF geradorDePDF = new GeradorDePDF();
 						try {
 							geradorDePDF.criarPDFCompleto(textFieldCaminho.getText().toString(), dataInicial, dataFinal,
-									textFieldIDPovoamento.getText().toString(), relatorioCompleto);
+									textFieldIDPovoamento.getText().toString(), relatorioCompleto,1);
 						} catch (DocumentException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -285,30 +312,72 @@ public class TelaRelatorio extends JFrame {
 						GeradorDePDF geradorDePDF = new GeradorDePDF();
 						try {
 							geradorDePDF.criarPDFCompleto(textFieldCaminho.getText().toString(), dataInicial, dataFinal,
-									textFieldIDPovoamento.getText().toString(), relatorioParcialComercialiazacaoAmbiente);
+									textFieldIDPovoamento.getText().toString(), relatorioParcialComercialiazacaoAmbiente,2);
 						} catch (DocumentException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					} else if (rdbtnAmbiente.isSelected() && rdbtnBiometrias.isSelected()
 							&& (rdbtnComercializacao.isSelected() == false)) {
+						GeradorDePDF geradorDePDF = new GeradorDePDF();
+						try {
+							geradorDePDF.criarPDFCompleto(textFieldCaminho.getText().toString(), dataInicial, dataFinal,
+									textFieldIDPovoamento.getText().toString(), relatorioParcialBiometriaAmbiente,1);
+						} catch (DocumentException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						System.out.println("vai gerar o relatório ambiente biometria");
 					} else if (rdbtnComercializacao.isSelected() && rdbtnBiometrias.isSelected()
 							&& (rdbtnAmbiente.isSelected() == false)) {
+						GeradorDePDF geradorDePDF = new GeradorDePDF();
+						try {
+							geradorDePDF.criarPDFCompleto(textFieldCaminho.getText().toString(), dataInicial, dataFinal,
+									textFieldIDPovoamento.getText().toString(), relatorioParcialBiometriaComercializacao,1);
+						} catch (DocumentException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						System.out.println("vai gerar o relatório comercialização biometria");
+						
 					} else if (rdbtnComercializacao.isSelected()
 							&& (rdbtnBiometrias.isSelected() == false && rdbtnAmbiente.isSelected() == false)) {
+						GeradorDePDF geradorDePDF = new GeradorDePDF();
+						try {
+							geradorDePDF.criarPDFCompleto(textFieldCaminho.getText().toString(), dataInicial, dataFinal,
+									textFieldIDPovoamento.getText().toString(), relatorioParcialComercializacao,3);
+						} catch (DocumentException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						System.out.println("vai gerar o relatório comercialização");
 					} else if (rdbtnAmbiente.isSelected()
 							&& (rdbtnComercializacao.isSelected() == false && rdbtnBiometrias.isSelected() == false)) {
+						GeradorDePDF geradorDePDF = new GeradorDePDF();
+						try {
+							geradorDePDF.criarPDFCompleto(textFieldCaminho.getText().toString(), dataInicial, dataFinal,
+									textFieldIDPovoamento.getText().toString(), relatorioParcialAmbiente,2);
+						} catch (DocumentException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						System.out.println("vai gerar o relatório ambiente");
+						
 					} else if (rdbtnBiometrias.isSelected()
 							&& (rdbtnComercializacao.isSelected() == false && rdbtnAmbiente.isSelected() == false)) {
+						GeradorDePDF geradorDePDF = new GeradorDePDF();
+						try {
+							geradorDePDF.criarPDFCompleto(textFieldCaminho.getText().toString(), dataInicial, dataFinal,
+									textFieldIDPovoamento.getText().toString(), relatorioParcialBiometria,1);
+						} catch (DocumentException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						System.out.println("vai gerar o relatório biometria");
 					}
 
 				} else {
-					System.out.println("datas não batem");
+					JOptionPane.showMessageDialog(null, "Preencha todos os campos antes de gerar o relatório");
 				}
 			}
 		};

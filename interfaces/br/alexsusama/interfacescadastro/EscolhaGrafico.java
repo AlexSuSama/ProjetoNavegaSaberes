@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,6 +17,10 @@ import java.awt.Font;
 
 public class EscolhaGrafico extends JInternalFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	/**
@@ -63,7 +66,7 @@ public class EscolhaGrafico extends JInternalFrame {
 		
 		JLabel lblComercializao = new JLabel("");
 		lblComercializao.setBackground(Color.LIGHT_GRAY);
-		lblComercializao.setIcon(new ImageIcon("C:\\Users\\AlexSama\\Documents\\Projeto navega saberes\\iconeGraficoComercializacao.png"));
+		lblComercializao.setIcon(new ImageIcon(EscolhaGrafico.class.getResource("/br/alexsusama/imagens/iconeGraficoComercializacao.png")));
 		panel.add(lblComercializao);
 		
 		JPanel panel_1 = new JPanel();
@@ -79,7 +82,7 @@ public class EscolhaGrafico extends JInternalFrame {
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblBiometria = new JLabel("");
-		lblBiometria.setIcon(new ImageIcon("C:\\Users\\AlexSama\\Documents\\Projeto navega saberes\\iconeEstoque.png"));
+		lblBiometria.setIcon(new ImageIcon(EscolhaGrafico.class.getResource("/br/alexsusama/imagens/iconeEstoque.png")));
 		panel_1.add(lblBiometria);
 		
 		JPanel panel_2 = new JPanel();
@@ -97,23 +100,26 @@ public class EscolhaGrafico extends JInternalFrame {
 		panel_2.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblEstoque = new JLabel("");
-		lblEstoque.setIcon(new ImageIcon("C:\\Users\\AlexSama\\Documents\\Projeto navega saberes\\iconeGraficoBiometria.png"));
+		lblEstoque.setIcon(new ImageIcon(EscolhaGrafico.class.getResource("/br/alexsusama/imagens/iconeGraficoBiometria.png")));
 		panel_2.add(lblEstoque);
 		
 		JLabel lblComercializao_1 = new JLabel("Comercializa\u00E7\u00E3o");
+		lblComercializao_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblComercializao_1.setBounds(331, 317, 109, 22);
 		contentPane.add(lblComercializao_1);
 		
 		JLabel lblBiometria_1 = new JLabel("Biometria");
+		lblBiometria_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblBiometria_1.setBounds(583, 317, 80, 22);
 		contentPane.add(lblBiometria_1);
 		
-		JLabel lblEscolhaOGrfico = new JLabel("Escolha o gr\u00E1fico:");
-		lblEscolhaOGrfico.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblEscolhaOGrfico.setBounds(45, 33, 189, 31);
+		JLabel lblEscolhaOGrfico = new JLabel("Escolha o tipo de gr\u00E1fico:");
+		lblEscolhaOGrfico.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblEscolhaOGrfico.setBounds(45, 33, 219, 31);
 		contentPane.add(lblEscolhaOGrfico);
 		
 		JLabel lblEstoque_1 = new JLabel("Estoque");
+		lblEstoque_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblEstoque_1.setBounds(128, 317, 91, 22);
 		contentPane.add(lblEstoque_1);
 	}

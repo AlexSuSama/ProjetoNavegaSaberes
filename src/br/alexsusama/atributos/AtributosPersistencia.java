@@ -78,7 +78,7 @@ public class AtributosPersistencia {
 	private String ID_BIOMETRIA = "idbiometria";
 
 	private String tabelaBiometria = "biometria";
-	
+
 	public String getID_BIOMETRIA() {
 		return ID_BIOMETRIA;
 	}
@@ -142,6 +142,33 @@ public class AtributosPersistencia {
 	private String MUNICIPIO_COMERCIALIZADO = "municipio";
 	private String LOCALIDADE_COMERCIALIZADA = "local";
 	private String tabela_comercializacao = "comercializacao";
+	private String VALOR_FRETE = "valor_frete";
+	private String DUZIAS_BABY = "duzias_baby";
+	private String DUZIAS_MEDIA = "duzias_medias";
+	private String DUZIAS_MASTER = "duzias_master";
+	
+	
+	public String getDUZIAS_BABY() {
+		return DUZIAS_BABY;
+	}
+
+	public String getDUZIAS_MEDIA() {
+		return DUZIAS_MEDIA;
+	}
+
+	public String getDUZIAS_MASTER() {
+		return DUZIAS_MASTER;
+	}
+
+	public String getVALOR_FRETE() {
+		return VALOR_FRETE;
+	}
+
+	private String ID_POV_COMERCIALIZACAO = "id_povoamento";
+
+	public String getID_POV_COMERCIALIZACAO() {
+		return ID_POV_COMERCIALIZACAO;
+	}
 
 	public String getTabela_comercializacao() {
 		return tabela_comercializacao;
@@ -202,6 +229,11 @@ public class AtributosPersistencia {
 	private String DATA_ESTOQUE = "data_estoque";
 	private String tabela_estoque = "estoque";
 	private String IDESTOQUE = "idestoque";
+	private String IDPOVOAMENTOESOTQUE = "id_povoamento";
+	
+	public String getIDPOVOAMENTOESOTQUE() {
+		return IDPOVOAMENTOESOTQUE;
+	}
 
 	public String getVALOR_COMERCIALIZACAO() {
 		return VALOR_COMERCIALIZACAO;

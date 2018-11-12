@@ -36,6 +36,10 @@ import java.awt.Color;
 import javax.swing.JTextField;
 
 public class GraficosComercializacao extends JInternalFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JFormattedTextField textDataInicial;
 	JFormattedTextField textDataFinal;
 
@@ -67,7 +71,7 @@ public class GraficosComercializacao extends JInternalFrame {
 	 */
 	public GraficosComercializacao() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 744, 472);
+		setBounds(100, 100, 772, 472);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -86,10 +90,10 @@ public class GraficosComercializacao extends JInternalFrame {
 		labelGraficos = new JLabel("");
 		panel.add(labelGraficos, BorderLayout.CENTER);
 
-		JLabel label = new JLabel("Selecione o Per\u00EDodo");
-		label.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		label.setBounds(289, 50, 119, 14);
-		contentPane.add(label);
+		JLabel lblSelecioneOPerodo = new JLabel("Selecione o per\u00EDodo:");
+		lblSelecioneOPerodo.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblSelecioneOPerodo.setBounds(289, 50, 119, 14);
+		contentPane.add(lblSelecioneOPerodo);
 		try {
 			MaskFormatter mascara = new MaskFormatter("##-##-####");
 			textDataInicial = new JFormattedTextField(mascara);
@@ -111,12 +115,12 @@ public class GraficosComercializacao extends JInternalFrame {
 			// TODO: handle exception
 		}
 		JButton button = new JButton("Buscar");
-		button.setBounds(615, 401, 89, 23);
+		button.setBounds(615, 392, 89, 41);
 		button.addActionListener(btnBuscar());
 		contentPane.add(button);
 
 		JRadioButton rdbtnQuantidadeVendida = new JRadioButton("Quantidade vendida");
-		rdbtnQuantidadeVendida.setBounds(22, 401, 136, 23);
+		rdbtnQuantidadeVendida.setBounds(173, 401, 136, 23);
 		rdbtnQuantidadeVendida.addActionListener(new ActionListener() {
 
 			@Override
@@ -128,7 +132,7 @@ public class GraficosComercializacao extends JInternalFrame {
 		contentPane.add(rdbtnQuantidadeVendida);
 
 		JRadioButton rdbtnreasDeComercializao = new JRadioButton("\u00C1reas de comercializa\u00E7\u00E3o");
-		rdbtnreasDeComercializao.setBounds(160, 401, 158, 23);
+		rdbtnreasDeComercializao.setBounds(311, 401, 158, 23);
 		rdbtnreasDeComercializao.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -149,7 +153,7 @@ public class GraficosComercializacao extends JInternalFrame {
 				dispose();
 			}
 		});
-		btnVoltar.setBounds(501, 401, 89, 23);
+		btnVoltar.setBounds(22, 392, 89, 41);
 		contentPane.add(btnVoltar);
 
 		JLabel lblPovoamento = new JLabel("Povoamento");
@@ -159,7 +163,7 @@ public class GraficosComercializacao extends JInternalFrame {
 
 		textFieldIdPovomanto = new JTextField();
 		textFieldIdPovomanto.setEditable(false);
-		textFieldIdPovomanto.setBounds(143, 48, 86, 20);
+		textFieldIdPovomanto.setBounds(115, 48, 86, 20);
 		contentPane.add(textFieldIdPovomanto);
 		textFieldIdPovomanto.setColumns(10);
 
@@ -172,7 +176,7 @@ public class GraficosComercializacao extends JInternalFrame {
 
 			}
 		});
-		btnNewButton.setBounds(22, 0, 207, 40);
+		btnNewButton.setBounds(22, 0, 179, 40);
 		contentPane.add(btnNewButton);
 	}
 

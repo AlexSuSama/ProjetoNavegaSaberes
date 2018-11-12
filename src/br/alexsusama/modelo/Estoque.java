@@ -211,10 +211,14 @@ public class Estoque extends ListaEstoque {
 		this.data = data;
 	}
 	// metodos de criacao,edicao e exclusao de estoque;
-	public void criarEstoque() {
+	public void criarEstoque(String idParent) {
 		if (this.data != null) {
-			SaidaEntradaEstoque entrada = new SaidaEntradaEstoque();
-			entrada.salvarEstoque(this);
+			SaidaEntradaEstoque saida = new SaidaEntradaEstoque();
+			
+			if (this.getData() != null) {
+				saida.salvarEstoque(this, idParent);
+			} else {System.out.println("falha ao repassar os dados");}
+
 		}
 	}
 

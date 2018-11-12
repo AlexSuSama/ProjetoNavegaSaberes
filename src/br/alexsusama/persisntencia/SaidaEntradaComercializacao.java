@@ -4,23 +4,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
+//import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.plaf.ComponentInputMapUIResource;
+//import javax.swing.plaf.ComponentInputMapUIResource;
 
 import br.alexsusama.atributos.AtributosPersistencia;
 import br.alexsusama.modelo.Comercializacao;
 import br.alexsusama.validacoes.ValidacaoDeDatas;
 
 public class SaidaEntradaComercializacao {
-	public void criarNovaComercializacao(Comercializacao comercializacao) {
+	public void criarNovaComercializacao(Comercializacao comercializacao, String idParent) {
 		AtributosPersistencia a = new AtributosPersistencia();
 		String sql = "INSERT INTO " + a.getTabela_comercializacao() + " (" + a.getDATA_VENDA() + ","
 				+ a.getNOME_COMPRADOR() + "," + a.getTIPO_COMPRADOR() + "," + a.getVALOR_COMERCILIZADO() + ","
-				+ a.getTIPO_COMERCIALIZADO() + "," + a.getDUZIAS_VENDIDA() + "," + a.getMUNICIPIO_COMERCIALIZADO() + ","
-				+ a.getLOCALIDADE_COMERCIALIZADA() + ") VALUES(?,?,?,?,?,?,?,?)";
+				+ a.getTIPO_COMERCIALIZADO() + "," + a.getMUNICIPIO_COMERCIALIZADO() + ","
+				+ a.getLOCALIDADE_COMERCIALIZADA() + "," + a.getID_POV_COMERCIALIZACAO() + "," + a.getVALOR_FRETE()
+				+ "," + a.getDUZIAS_BABY() + "," + a.getDUZIAS_MEDIA() + "," + a.getDUZIAS_MASTER()
+				+ ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
 		try {
 			ConnectionDB con = new ConnectionDB();
 			PreparedStatement psStatement = con.getConection().prepareStatement(sql);
@@ -29,9 +31,14 @@ public class SaidaEntradaComercializacao {
 			psStatement.setString(3, comercializacao.getTipoDeComprador());
 			psStatement.setInt(4, comercializacao.getValorVenda());
 			psStatement.setString(5, comercializacao.getTipoComercializado());
-			psStatement.setInt(6, comercializacao.getQtVendidas());
-			psStatement.setString(7, comercializacao.getMunicipio());
-			psStatement.setString(8, comercializacao.getLocalidade());
+			psStatement.setString(6, comercializacao.getMunicipio());
+			psStatement.setString(7, comercializacao.getLocalidade());
+			psStatement.setString(8, idParent);
+			psStatement.setInt(9, comercializacao.getValorFrete());
+			psStatement.setInt(10, comercializacao.getDuziasBaby());
+			psStatement.setInt(11, comercializacao.getDuziasMedias());
+			psStatement.setInt(12, comercializacao.getDuziasMaster());
+
 			int confirmacao = psStatement.executeUpdate();
 			psStatement.close();
 			if (confirmacao == 1) {
@@ -44,10 +51,10 @@ public class SaidaEntradaComercializacao {
 		}
 	}
 
-	public List<Comercializacao> resgatarComercializacoes() {
+	public List<Comercializacao> resgatarComercializacoes(String id) {
 		AtributosPersistencia a = new AtributosPersistencia();
 
-		String sql = "SELECT * FROM comercializacao";
+		String sql = "SELECT * FROM comercializacao WHERE id_povoamento = " + id;
 		ConnectionDB con;
 		List<Comercializacao> listaComercializacao = new ArrayList<Comercializacao>();
 		try {
@@ -64,7 +71,11 @@ public class SaidaEntradaComercializacao {
 				comercializacao.setLocalidade(rs.getString(a.getLOCALIDADE_COMERCIALIZADA()));
 				comercializacao.setMunicipio(rs.getString(a.getMUNICIPIO_COMERCIALIZADO()));
 				comercializacao.setTipoDeComprador(rs.getString(a.getTIPO_COMPRADOR()));
-				comercializacao.setQtVendidas(rs.getInt(a.getDUZIAS_VENDIDA()));
+
+				comercializacao.setDuziasBaby(rs.getInt(a.getDUZIAS_BABY()));
+				comercializacao.setDuziasMedias(rs.getInt(a.getDUZIAS_MEDIA()));
+				comercializacao.setDuziasMaster(rs.getInt(a.getDUZIAS_MASTER()));
+
 				comercializacao.setValorVenda(rs.getInt(a.getVALOR_COMERCIALIZACAO()));
 				comercializacao.setIdComercializacao(rs.getInt(a.getID_COMERCIALIZACAO()));
 				comercializacao.setTipoComercializado(rs.getString(a.getTIPO_COMERCIALIZADO()));
@@ -79,13 +90,18 @@ public class SaidaEntradaComercializacao {
 		return listaComercializacao;
 
 	}
+	/*
+	 * preciso colocar todos os valores das variaveis que correspondem as duzias
+	 * vendidas em todas as incerções
+	 */
 
 	public void editarComercializacao(Comercializacao comercializacao, String id) {
 		AtributosPersistencia a = new AtributosPersistencia();
 		String sql = "UPDATE " + a.getTabela_comercializacao() + " SET " + a.getDATA_VENDA() + " = ?,"
 				+ a.getNOME_COMPRADOR() + "= ?," + a.getTIPO_COMPRADOR() + "= ?," + a.getVALOR_COMERCILIZADO() + "= ?,"
-				+ a.getTIPO_COMERCIALIZADO() + "= ?," + a.getDUZIAS_VENDIDA() + "= ?," + a.getMUNICIPIO_COMERCIALIZADO()
-				+ "= ?," + a.getLOCALIDADE_COMERCIALIZADA() + " = ? WHERE id_comercializacao = " + id;
+				+ a.getTIPO_COMERCIALIZADO() + "= ?," + a.getMUNICIPIO_COMERCIALIZADO() + "= ?,"
+				+ a.getLOCALIDADE_COMERCIALIZADA() + " = ?," + a.getDUZIAS_BABY() + "=?," + a.getDUZIAS_MEDIA() + "=?,"
+				+ a.getDUZIAS_MASTER() + " = ? WHERE id_comercializacao = " + id;
 		try {
 			ConnectionDB con = new ConnectionDB();
 			PreparedStatement psStatement = con.getConection().prepareStatement(sql);
@@ -94,9 +110,13 @@ public class SaidaEntradaComercializacao {
 			psStatement.setString(3, comercializacao.getTipoDeComprador());
 			psStatement.setInt(4, comercializacao.getValorVenda());
 			psStatement.setString(5, comercializacao.getTipoComercializado());
-			psStatement.setInt(6, comercializacao.getQtVendidas());
-			psStatement.setString(7, comercializacao.getMunicipio());
-			psStatement.setString(8, comercializacao.getLocalidade());
+			psStatement.setString(6, comercializacao.getMunicipio());
+			psStatement.setString(7, comercializacao.getLocalidade());
+			
+			psStatement.setInt(8, comercializacao.getDuziasBaby());
+			psStatement.setInt(9, comercializacao.getDuziasMedias());
+			psStatement.setInt(10, comercializacao.getDuziasMaster());
+			
 			int confirmacao = psStatement.executeUpdate();
 
 			psStatement.close();
@@ -146,7 +166,12 @@ public class SaidaEntradaComercializacao {
 			comercializacao.setLocalidade(rs.getString(a.getLOCALIDADE_COMERCIALIZADA()));
 			comercializacao.setMunicipio(rs.getString(a.getMUNICIPIO_COMERCIALIZADO()));
 			comercializacao.setTipoDeComprador(rs.getString(a.getTIPO_COMPRADOR()));
-			comercializacao.setQtVendidas(rs.getInt(a.getDUZIAS_VENDIDA()));
+			// comercializacao.setQtVendidas(rs.getInt(a.getDUZIAS_VENDIDA()));
+			
+			comercializacao.setDuziasBaby(rs.getInt(a.getDUZIAS_BABY()));
+			comercializacao.setDuziasMedias(rs.getInt(a.getDUZIAS_MEDIA()));
+			comercializacao.setDuziasMaster(rs.getInt(a.getDUZIAS_MASTER()));
+			
 			comercializacao.setValorVenda(rs.getInt(a.getVALOR_COMERCIALIZACAO()));
 			comercializacao.setIdComercializacao(rs.getInt(a.getID_COMERCIALIZACAO()));
 			comercializacao.setTipoComercializado(rs.getString(a.getTIPO_COMERCIALIZADO()));
@@ -160,12 +185,12 @@ public class SaidaEntradaComercializacao {
 		return null;
 	}
 
-	public java.util.List<Comercializacao> valoresComercializacaoMunicipio(String dataInicial, String dataFinal)
-			throws SQLException {
+	public java.util.List<Comercializacao> valoresComercializacaoMunicipio(String dataInicial, String dataFinal,
+			String idPovoamento) throws SQLException {
 		ConnectionDB conexaoDB = new ConnectionDB();
 		PreparedStatement pstm;
 		AtributosPersistencia a = new AtributosPersistencia();
-		String sql = "SELECT data_venda,municipio, sum(duzias_vendida) from comercializacao GROUP BY municipio;";
+		String sql = "SELECT data_venda, municipio,sum(duzias_baby+duzias_medias+duzias_master), sum(duzias_baby),sum(duzias_master),sum(duzias_medias), valor_frete from comercializacao  where id_povoamento = "+idPovoamento+" GROUP BY municipio";
 
 		java.util.List<Comercializacao> comercializacaos = new ArrayList<>();
 		try {
@@ -176,7 +201,15 @@ public class SaidaEntradaComercializacao {
 				Comercializacao comercializacao = new Comercializacao();
 				comercializacao.setDataComercializacao(rs.getString(a.getDATA_VENDA()));
 				comercializacao.setMunicipio(rs.getString(a.getMUNICIPIO_COMERCIALIZADO()));
-				comercializacao.setQtVendidas(rs.getInt("sum(duzias_vendida)"));
+				//tenho que colocar para somar todas as formas de comercializacao
+				
+				comercializacao.setDuziasBaby(rs.getInt("sum(duzias_baby)"));
+				comercializacao.setDuziasMedias(rs.getInt("sum(duzias_medias)"));
+				comercializacao.setDuziasMaster(rs.getInt("sum(duzias_master)"));
+				
+				comercializacao.setDuziasTotal(rs.getInt( "sum(duzias_baby+duzias_medias+duzias_master)"));
+				
+				comercializacao.setValorFrete(rs.getInt(a.getVALOR_FRETE()));
 				comercializacaos.add(comercializacao);
 			}
 			pstm.close();

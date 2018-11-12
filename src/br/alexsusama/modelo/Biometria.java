@@ -113,8 +113,14 @@ public class Biometria extends ListaBiometria{
 
 	public void criarBiometria(String idParent) {
 		SaidaEntradaBiometria saida = new SaidaEntradaBiometria();
-		calcularMortalidade();
+		//calcularMortalidade();
 		calcularSobrevivencia();
+		//Calculos calculos = new Calculos();
+		//double mortality = Calculos.calcularMortalidade(this.ostraBiometria.getQuantidadeTotal(), this.ostraBiometria.getQuantidadeMorta());
+		
+		//this.mortalidade = calculos.formatDouble(mortality);
+		
+		System.out.println(this.mortalidade);
 		if (this.getDate() != null) {
 			saida.criarNovoBiometria(this, idParent);
 		} else {System.out.println("falha ao repassar os dados");}

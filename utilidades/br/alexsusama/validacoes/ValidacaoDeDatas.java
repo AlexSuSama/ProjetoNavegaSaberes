@@ -47,8 +47,9 @@ public class ValidacaoDeDatas {
 	}
 
 	public static boolean verificarData(String dataInicial, String dataFinal) {
-
+		if(!(dataInicial.equals("  /  /    ")||dataFinal.equals("  /  /    ")))
 		if (!(dataInicial.equals("  -  -    ") || dataFinal.equals("  -  -    "))) {
+			
 			String diaInicial;
 			String mesInicial;
 			String anoInicial;
@@ -65,15 +66,19 @@ public class ValidacaoDeDatas {
 			mesFinal = dataFinal.substring(3, 5);
 			anoFinal = dataFinal.substring(6, 10);
 
-			int year = Integer.parseInt(anoInicial);
+			int year = Integer.parseInt(anoInicial) ;
 			int month = Integer.parseInt(mesInicial);
 			int day = Integer.parseInt(diaInicial);
 
-			int yearEnd = Integer.parseInt(anoFinal);
+			int yearEnd = Integer.parseInt(anoFinal); 
 			int monthEnd = Integer.parseInt(mesFinal);
 			int dayEnd = Integer.parseInt(diaFinal);
-
-			if ((month >= 1 && month <= 12) && (monthEnd >= 1 && monthEnd <= 12)) {
+			
+			
+			int somaDataFinal = yearEnd +monthEnd+dayEnd;
+			int somaDataInicial = year+month+day;
+			
+			if ((month >= 1 && month <= 12) && (monthEnd >= 1 && monthEnd <= 12)&&(somaDataFinal>somaDataInicial)) {
 				if ((year >= 2000) && (yearEnd >= 2000)) {
 
 					if ((day > 0 && day <= 31) && (dayEnd > 0 && dayEnd <= 31)) {
@@ -90,7 +95,8 @@ public class ValidacaoDeDatas {
 					return false;
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "Mês inválido");
+				JOptionPane.showMessageDialog(null, "Data incorreta");
+				System.out.println("ou as datas não conferem");
 				return false;
 			}
 
@@ -105,13 +111,18 @@ public class ValidacaoDeDatas {
 		String dia;
 		String mes;
 		String ano;
-
+		
 		dia = data.substring(0, 2);
 		mes = data.substring(3, 5);
 		ano = data.substring(6, 10);
 		
-		return ano+"-"+mes+"-"+dia;
+		int year = Integer.parseInt(ano) + 1;
+		int month = Integer.parseInt(mes);
+		int day = Integer.parseInt(dia);
+		
+		return String.valueOf(year) + "-" + String.valueOf(month) + "-" + String.valueOf(day);
 	}
+
 	public static String padronizarDatasNoCampo(String data) {
 		String dia;
 		String mes;
@@ -120,21 +131,30 @@ public class ValidacaoDeDatas {
 		dia = data.substring(0, 4);
 		mes = data.substring(5, 7);
 		ano = data.substring(8, 10);
-		
-		return ano+"/"+mes+"/"+dia;
+
+		return ano + "/" + mes + "/" + dia;
 	}
+
 	public static String padronizarDatasCampoAtualizacao(String data) {
 		String dia;
 		String mes;
 		String ano;
+		if (data.length() >= 10) {
+			System.out.println("data tem 10 digitos");
+			ano = data.substring(0, 4);
+			mes = data.substring(5, 7);
+			dia = data.substring(8, 10);
 
-		ano = data.substring(0, 4);
-		mes = data.substring(5, 7);
-		dia = data.substring(8, 10);
-		
-		return ano+"/"+mes+"/"+dia;
+			return dia + "/" + mes + "/" + ano;
+		} else {
+			System.out.println("data tem 9 digitos");
+			ano = data.substring(0, 4);
+			mes = data.substring(5, 6);
+			dia = data.substring(7, 9);
+
+			return dia + "/" + mes + "/" + ano;
+		}
 	}
-
 
 	public static String padronizarDatas(Calendar data) {
 		String dataPadronizada = String.valueOf(data.get(Calendar.YEAR)) + "-"

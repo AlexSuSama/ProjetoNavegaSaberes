@@ -4,13 +4,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import javax.swing.JOptionPane;
 
 import org.sqlite.SQLiteConfig;
 
 public class ConnectionDB {
 	public static Connection con = null;
-	public String DBpath ="jdbc:sqlite:C:\\Users\\AlexSama\\eclipse-workspace\\ProjetoNavegaSaberes\\src\\db\\ProjetoNavegaDB.db";
+	//public String DBpath ="jdbc:sqlite:C:\\Users\\AlexSama\\eclipse-workspace\\ProjetoNavegaSaberes\\src\\db\\ProjetoNavegaDB.db";
+	
+	//public String DBpath ="jdbc:sqlite:ProjetoNavegaDB.db";
+	
+	public String DBpath ="jdbc:sqlite::resource:ProjetoNavegaDB.db";
+	
 	
 	public ConnectionDB() throws SQLException{
 		

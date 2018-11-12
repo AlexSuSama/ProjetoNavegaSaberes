@@ -7,25 +7,25 @@ import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import br.alexsusama.modelo.Biometria;
-import br.alexsusama.modelo.Comercializacao;
 import br.alexsusama.modelo.Povoamento;
-import br.alexsusama.persisntencia.SaidaEntradaBiometria;
-import br.alexsusama.persisntencia.SaidaEntradaComercializacao;
 import br.alexsusama.persisntencia.SaidaEntradaPovoamento;
 import javax.swing.border.BevelBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class ListaPovoamentosGrafico extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;
 
@@ -81,8 +81,8 @@ public class ListaPovoamentosGrafico extends JFrame {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					// Exibe o popup menu na posição do mouse.
 					String id = table.getValueAt(table.getSelectedRow(), 0).toString();
-					SaidaEntradaBiometria saida = new SaidaEntradaBiometria();
-					SaidaEntradaPovoamento saidaPovoamento = new SaidaEntradaPovoamento();
+				//	SaidaEntradaBiometria saida = new SaidaEntradaBiometria();
+				//	SaidaEntradaPovoamento saidaPovoamento = new SaidaEntradaPovoamento();
 					try {
 
 						idCapturado = id;

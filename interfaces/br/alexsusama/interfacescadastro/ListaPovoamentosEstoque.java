@@ -7,18 +7,15 @@ import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import br.alexsusama.modelo.Biometria;
-import br.alexsusama.modelo.Comercializacao;
+
 import br.alexsusama.modelo.Povoamento;
-import br.alexsusama.persisntencia.SaidaEntradaBiometria;
 import br.alexsusama.persisntencia.SaidaEntradaComercializacao;
 import br.alexsusama.persisntencia.SaidaEntradaPovoamento;
 import javax.swing.border.BevelBorder;
@@ -27,6 +24,11 @@ import java.awt.event.ActionEvent;
 
 public class ListaPovoamentosEstoque extends JFrame {
  
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private JPanel contentPane;
 
 	private JTable table;
@@ -99,7 +101,7 @@ public class ListaPovoamentosEstoque extends JFrame {
 							e1.printStackTrace();
 						}	
 						break;
-					case 2: 
+					case 10: 
 						try {
 							// faz a busca e repassa os valores do banco de dados
 							// para a lista de biometrias
@@ -122,13 +124,15 @@ public class ListaPovoamentosEstoque extends JFrame {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
+						break;
 						case 3:
 							try {
 								SaidaEntradaPovoamento saidaEntradaPovoamento = new SaidaEntradaPovoamento();
 								Povoamento povoamento = saidaEntradaPovoamento.resgatarPovoamento(id);
 								TelaRelatorio telaRelatorio = new TelaRelatorio();
 								telaRelatorio.atualizarCampos(povoamento);
-								telaRelatorio.setVisible(true);
+								Home.repassarTelas(telaRelatorio);
+								dispose();
 							} catch (Exception e2) {
 								// TODO: handle exception
 							}

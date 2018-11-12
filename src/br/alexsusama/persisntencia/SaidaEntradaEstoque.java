@@ -3,7 +3,9 @@ package br.alexsusama.persisntencia;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+//import java.util.concurrent.locks.StampedLock;
 
+//import javax.print.attribute.standard.JobMessageFromOperator;
 import javax.swing.JOptionPane;
 
 import br.alexsusama.atributos.AtributosPersistencia;
@@ -11,8 +13,8 @@ import br.alexsusama.modelo.Estoque;
 import br.alexsusama.validacoes.ValidacaoDeDatas;
 
 public class SaidaEntradaEstoque {
-	public void salvarEstoque(Estoque estoque) {
-		String sql = "INSERT INTO estoque (data_estoque,semente_estoque,juvenil_estoque,media_estoque,baby_estoque,master_estoque,malha69,malha12,malha14,malha21,long_line,coletores,varal,mesa_madeira,mesa_pvc,mesa_telada)values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	public void salvarEstoque(Estoque estoque, String idPovoamento) {
+		String sql = "INSERT INTO estoque ( data_estoque,semente_estoque,juvenil_estoque,media_estoque,baby_estoque,master_estoque,malha69,malha12,malha14,malha21,long_line,coletores,varal,mesa_madeira,mesa_pvc,mesa_telada,id_povoamento)values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		try {
 			ConnectionDB con = new ConnectionDB();
 			PreparedStatement statement = con.getConection().prepareStatement(sql);
@@ -32,6 +34,7 @@ public class SaidaEntradaEstoque {
 			statement.setInt(14, estoque.getMesaMadeira());
 			statement.setInt(15, estoque.getMesaPVC());
 			statement.setInt(16, estoque.getMesaTelada());
+			statement.setString(17, idPovoamento);
 			int confirmacao = statement.executeUpdate();
 			if (confirmacao == 1) {
 				JOptionPane.showMessageDialog(null, "O estoque foi salvo");
@@ -71,6 +74,9 @@ public class SaidaEntradaEstoque {
 			statement.setInt(15, estoque.getMesaPVC());
 			statement.setInt(16, estoque.getMesaTelada());
 			int confirmacao = statement.executeUpdate();
+
+			statement.close();
+
 			if (confirmacao == 1) {
 				JOptionPane.showMessageDialog(null, "O estoque foi atualizado");
 			} else {
@@ -88,6 +94,7 @@ public class SaidaEntradaEstoque {
 			ConnectionDB con = new ConnectionDB();
 			PreparedStatement statement = con.getConection().prepareStatement(sql);
 			int confirmacao = statement.executeUpdate();
+			statement.close();
 			if (confirmacao == 1) {
 				JOptionPane.showMessageDialog(null, "O estoque foi excluido");
 			} else {
@@ -99,8 +106,11 @@ public class SaidaEntradaEstoque {
 
 	}
 
-	public Estoque resgatarEstoque() {
-		String sql = "SELECT * FROM estoque where idestoque = (SELECT max(idestoque) FROM estoque)";
+	public Estoque resgatarEstoque(String id) {
+		// String sql = "SELECT * FROM estoque where idestoque = (SELECT
+		// max(idestoque) FROM estoque) AND id_povoamento = "+id;
+		//o sql abaixo retorna o ultimo valor baseado na data e id do povoamento pesquisado
+		String sql = "select * from estoque where data_estoque = (select max(data_estoque) FROM estoque) AND id_povoamento = "+id;
 		ConnectionDB connectionDB;
 		PreparedStatement statement;
 		AtributosPersistencia a = new AtributosPersistencia();
@@ -116,7 +126,7 @@ public class SaidaEntradaEstoque {
 				estoque.setDataEstoque(rs.getString(a.getDATA_ESTOQUE()));
 				estoque.setOstraSemente(rs.getInt(a.getSEMENTE_ESTOQUE()));
 				estoque.setOstraJuvenil(rs.getInt(a.getJUVENIL_ESTOQUE()));
-				estoque.setOstraBaby(rs.getInt(a.getBABY_ESTOQUE()));
+				estoque.setOstraBaby(rs.getInt(a.getBABY_ESTOQUE())); 
 				estoque.setOstraMedia(rs.getInt(a.getMEDIA_ESTOQUE()));
 				estoque.setOstraMaster(rs.getInt(a.getMASTER_ESTOQUE()));
 
@@ -134,9 +144,10 @@ public class SaidaEntradaEstoque {
 			} else {
 				System.out.println("reslutado da busca esta vazio");
 			}
+			statement.close();
 			return estoque;
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "erro ao fazer a busca no banco de dados");
+			JOptionPane.showMessageDialog(null, "Povoamento ainda não tem registro de estoque");
 		}
 		return null;
 	}

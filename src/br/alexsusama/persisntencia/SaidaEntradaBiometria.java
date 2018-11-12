@@ -9,12 +9,12 @@ import javax.swing.JOptionPane;
 
 import br.alexsusama.atributos.AtributosPersistencia;
 import br.alexsusama.modelo.Biometria;
-import br.alexsusama.modelo.Povoamento;
+//import br.alexsusama.modelo.Povoamento;
 import br.alexsusama.validacoes.ValidacaoDeDatas;
 
 public class SaidaEntradaBiometria {
 	public void criarNovoBiometria(Biometria biometria, String idParent) {
-		if (biometria != null) {
+		if (biometria != null) { 
 			PreparedStatement pStatement;
 			AtributosPersistencia a = new AtributosPersistencia();
 			String sql = "INSERT INTO " + a.getTabelaBiometria() + " (" + a.getQUANTIDADETOTAL() + ","
@@ -170,8 +170,74 @@ public class SaidaEntradaBiometria {
 			
 			pstm.close();
 			
-			System.out.println("quantidade morta log 3 saida entrada: "+biometria.getQtMorta());
-			System.out.println("quantidade total log 3 saida entrada: "+biometria.getQtTotal());
+			return biometria;
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "deu pau");
+		}
+		return null;
+
+	}
+	public Biometria resgatarUltimaBiometria(String idPovoamento, String dataInicial, String dataFinal) {
+
+		String sql = "SELECT * FROM biometria where data_coleta BETWEEN '"+dataInicial+"' AND '"+dataFinal+"' AND \"id-dos-povoamentos\" = "+idPovoamento+" ORDER BY data_coleta DESC LIMIT 1";
+		try {
+			ConnectionDB con = new ConnectionDB();
+			PreparedStatement pstm;
+			pstm = con.getConection().prepareStatement(sql);
+
+			ResultSet rs = pstm.executeQuery();
+
+			AtributosPersistencia a = new AtributosPersistencia();
+			Biometria biometria = new Biometria();
+
+			biometria.setIDBiometria(rs.getInt(a.getID_BIOMETRIA()));
+			biometria.setQtMorta(rs.getInt(a.getQUANTIDADEMORTA()));
+			biometria.setQtTotal(rs.getInt(a.getQUANTIDADETOTAL()));
+			biometria.setEstagioCrescimento(rs.getString(a.getESTAGIO_CRESCIMENTO()));
+			biometria.setTemperatura(rs.getInt(a.getTEMPERATURA()));
+			biometria.setSalinidade(rs.getInt(a.getSALINIDADE()));
+			biometria.setMediaCrescimento(rs.getDouble(a.getMEDIA_CRESCIMENTO()));
+			biometria.setMortalidade(rs.getDouble(a.getMORTALIDADE()));
+			biometria.setSobrevivencia(rs.getDouble(a.getSOBREVIVENCIA()));
+			biometria.setDataInicial(rs.getString(a.getDATA_COLETA()));
+			biometria.setSistemaProducao(rs.getString(a.getSISTEMA_PRODUCAO()));
+			
+			pstm.close();
+			
+			return biometria;
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "deu pau");
+		}
+		return null;
+
+	}
+	public Biometria resgatarPrimeiraBiometria(String idPovoamento, String dataInicial, String dataFinal) {
+
+		String sql = "SELECT * FROM biometria where data_coleta BETWEEN '"+dataInicial+"' AND '"+dataFinal+"' AND \"id-dos-povoamentos\" = "+idPovoamento+" ORDER BY data_coleta ASC LIMIT 1";
+
+		try {
+			ConnectionDB con = new ConnectionDB();
+			PreparedStatement pstm;
+			pstm = con.getConection().prepareStatement(sql);
+
+			ResultSet rs = pstm.executeQuery();
+
+			AtributosPersistencia a = new AtributosPersistencia();
+			Biometria biometria = new Biometria();
+
+			biometria.setIDBiometria(rs.getInt(a.getID_BIOMETRIA()));
+			biometria.setQtMorta(rs.getInt(a.getQUANTIDADEMORTA()));
+			biometria.setQtTotal(rs.getInt(a.getQUANTIDADETOTAL()));
+			biometria.setEstagioCrescimento(rs.getString(a.getESTAGIO_CRESCIMENTO()));
+			biometria.setTemperatura(rs.getInt(a.getTEMPERATURA()));
+			biometria.setSalinidade(rs.getInt(a.getSALINIDADE()));
+			biometria.setMediaCrescimento(rs.getDouble(a.getMEDIA_CRESCIMENTO()));
+			biometria.setMortalidade(rs.getDouble(a.getMORTALIDADE()));
+			biometria.setSobrevivencia(rs.getDouble(a.getSOBREVIVENCIA()));
+			biometria.setDataInicial(rs.getString(a.getDATA_COLETA()));
+			biometria.setSistemaProducao(rs.getString(a.getSISTEMA_PRODUCAO()));
+			
+			pstm.close();
 			
 			return biometria;
 		} catch (SQLException e) {
@@ -181,13 +247,13 @@ public class SaidaEntradaBiometria {
 
 	}
 
-	public java.util.List<Biometria> biometriasPorPeriodo(String dataInicial, String dataFinal, String id)
+	public java.util.List<Biometria> biometriasPorPeriodo(String dataInicial, String dataFinal, String idPovoamento)
 			throws SQLException {
 		ConnectionDB con = new ConnectionDB();
 		PreparedStatement pstm;
 		AtributosPersistencia a = new AtributosPersistencia();
 		String sql = "SELECT * FROM biometria WHERE data_coleta BETWEEN " + dataInicial + " AND " + dataFinal
-				+ " AND \"id-dos-povoamentos\" = " + id + " ORDER BY data_coleta ASC";
+				+ " AND \"id-dos-povoamentos\" = " + idPovoamento + " ORDER BY data_coleta ASC";
 		java.util.List<Biometria> biometrias = new ArrayList<>();
 		try {
 			pstm = con.getConection().prepareStatement(sql);
@@ -203,11 +269,49 @@ public class SaidaEntradaBiometria {
 				bio.setQtTotal(rs.getInt(a.getQUANTIDADETOTAL()));
 				biometrias.add(bio);
 			}
-
+			pstm.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "não foi possivel recuperar o valor");
 		}
 		return biometrias;
 	}
+	public java.util.List<Biometria> resgatarUltimasBiometrias(String id) throws SQLException {
+		ConnectionDB con = new ConnectionDB();
+		PreparedStatement pstm;
 
+		String sql = "select * from biometria where \"id-dos-povoamentos\" =" + id + " order by data_coleta ASC LIMIT 12";
+		java.util.List<Biometria> biometrias = new ArrayList<>();
+		try {
+
+			pstm = con.getConection().prepareStatement(sql);
+
+			ResultSet rs = pstm.executeQuery();
+
+			while (rs.next()) {
+				AtributosPersistencia a = new AtributosPersistencia();
+				Biometria biometria = new Biometria();
+
+				biometria.setIDBiometria(rs.getInt(a.getID_BIOMETRIA()));
+				biometria.setQtMorta(rs.getInt(a.getQUANTIDADEMORTA()));
+				biometria.setQtTotal(rs.getInt(a.getQUANTIDADETOTAL()));
+				biometria.setEstagioCrescimento(rs.getString(a.getESTAGIO_CRESCIMENTO()));
+				biometria.setTemperatura(rs.getInt(a.getTEMPERATURA()));
+				biometria.setSalinidade(rs.getInt(a.getSALINIDADE()));
+				biometria.setMediaCrescimento(rs.getDouble(a.getMEDIA_CRESCIMENTO()));
+				biometria.setMortalidade(rs.getDouble(a.getMORTALIDADE()));
+				biometria.setSobrevivencia(rs.getDouble(a.getSOBREVIVENCIA()));
+				biometria.setDataInicial(rs.getString(a.getDATA_COLETA()));
+				biometria.setSistemaProducao(rs.getString(a.getSISTEMA_PRODUCAO()));
+
+				biometrias.add(biometria);
+
+			}
+			pstm.close();
+
+		} catch (SQLException e) {
+			// TODO: handle exception
+		}
+		return biometrias;
+
+	}
 }

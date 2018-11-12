@@ -4,9 +4,14 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -21,6 +26,7 @@ import javax.swing.text.MaskFormatter;
 
 import br.alexsusama.modelo.Ambiente;
 import br.alexsusama.modelo.Biometria;
+import br.alexsusama.modelo.GeradorDeGraficosBiometria;
 import br.alexsusama.modelo.Ostra;
 import br.alexsusama.persisntencia.SaidaEntradaBiometria;
 import br.alexsusama.persisntencia.SaidaEntradaPovoamento;
@@ -28,6 +34,9 @@ import br.alexsusama.validacoes.Calculos;
 import br.alexsusama.validacoes.RestricoesDeValores;
 import br.alexsusama.validacoes.ValidacaoDeDatas;
 import javax.swing.SwingConstants;
+import javax.swing.JScrollPane;
+import java.awt.Component;
+import javax.swing.ScrollPaneConstants;
 
 public class CadastroBiometrico extends JInternalFrame {
 
@@ -54,7 +63,11 @@ public class CadastroBiometrico extends JInternalFrame {
 
 	private int idBiometria;
 	private boolean atualizar = true;
-
+	
+	
+	JLabel labelGrafico;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -77,7 +90,7 @@ public class CadastroBiometrico extends JInternalFrame {
 	public CadastroBiometrico() {
 		setTitle("Nova Biometria");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 619, 490);
+		setBounds(100, 100, 802, 490);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -85,16 +98,16 @@ public class CadastroBiometrico extends JInternalFrame {
 
 		RestricoesDeValores restricoes = new RestricoesDeValores();
 
-		JLabel lblQuantidadeMorta = new JLabel("quantidade morta:");
+		JLabel lblQuantidadeMorta = new JLabel("Quantidade morta:");
 		lblQuantidadeMorta.setBounds(30, 181, 149, 14);
 		contentPane.add(lblQuantidadeMorta);
 
-		JLabel lblQuantidadeTotal = new JLabel("quantidade total");
+		JLabel lblQuantidadeTotal = new JLabel("Quantidade total");
 		lblQuantidadeTotal.setBounds(30, 206, 149, 14);
 		contentPane.add(lblQuantidadeTotal);
 
 		JLabel lblIdDoPovoamento = new JLabel("id do povoamento");
-		lblIdDoPovoamento.setBounds(299, 43, 99, 14);
+		lblIdDoPovoamento.setBounds(214, 43, 99, 14);
 		contentPane.add(lblIdDoPovoamento);
 
 		textFieldQtMorta = new JTextField();
@@ -116,11 +129,11 @@ public class CadastroBiometrico extends JInternalFrame {
 		textFieldIDPovoamento = new JTextField();
 		textFieldIDPovoamento.setEditable(false);
 		textFieldIDPovoamento.setColumns(10);
-		textFieldIDPovoamento.setBounds(417, 40, 67, 20);
+		textFieldIDPovoamento.setBounds(323, 40, 67, 20);
 		contentPane.add(textFieldIDPovoamento);
 
 		JButton btnSalva = new JButton("Salvar");
-		btnSalva.setBounds(359, 397, 89, 23);
+		btnSalva.setBounds(444, 386, 89, 35);
 		btnSalva.addActionListener(btnSalvar());
 		contentPane.add(btnSalva);
 
@@ -144,9 +157,9 @@ public class CadastroBiometrico extends JInternalFrame {
 		lblSalinidade.setBounds(30, 256, 149, 14);
 		contentPane.add(lblSalinidade);
 
-		JLabel lblSistemaDeProduo = new JLabel("Sistema de produ\u00E7\u00E3o");
+		JLabel lblSistemaDeProduo = new JLabel("Selecione o sistema de produ\u00E7\u00E3o");
 		lblSistemaDeProduo.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblSistemaDeProduo.setBounds(30, 312, 149, 23);
+		lblSistemaDeProduo.setBounds(30, 312, 240, 23);
 		contentPane.add(lblSistemaDeProduo);
 
 		JLabel lblDataDaBiometria = new JLabel("Data da biometria");
@@ -158,7 +171,7 @@ public class CadastroBiometrico extends JInternalFrame {
 			textFieldDataBiometria.setHorizontalAlignment(SwingConstants.CENTER);
 			textFieldDataBiometria.setToolTipText("EX: 12/12/2012");
 			textFieldDataBiometria.setColumns(10);
-			textFieldDataBiometria.setBounds(191, 40, 86, 20);
+			textFieldDataBiometria.setBounds(118, 40, 86, 20);
 			contentPane.add(textFieldDataBiometria);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -171,7 +184,7 @@ public class CadastroBiometrico extends JInternalFrame {
 		ButtonGroup groupRadioEstagio = new ButtonGroup();
 
 		JRadioButton rdbtnSemente = new JRadioButton("Semente");
-		rdbtnSemente.setBounds(30, 92, 67, 23);
+		rdbtnSemente.setBounds(50, 92, 89, 23);
 		contentPane.add(rdbtnSemente);
 		rdbtnSemente.addActionListener(new ActionListener() {
 
@@ -184,7 +197,7 @@ public class CadastroBiometrico extends JInternalFrame {
 		groupRadioEstagio.add(rdbtnSemente);
 
 		JRadioButton rdbtnJuvenil = new JRadioButton("Juvenil");
-		rdbtnJuvenil.setBounds(99, 89, 67, 23);
+		rdbtnJuvenil.setBounds(141, 92, 67, 23);
 		contentPane.add(rdbtnJuvenil);
 		rdbtnJuvenil.addActionListener(new ActionListener() {
 
@@ -197,7 +210,7 @@ public class CadastroBiometrico extends JInternalFrame {
 		groupRadioEstagio.add(rdbtnJuvenil);
 
 		JRadioButton rdbtnBaby = new JRadioButton("Baby");
-		rdbtnBaby.setBounds(174, 89, 67, 23);
+		rdbtnBaby.setBounds(210, 92, 67, 23);
 		contentPane.add(rdbtnBaby);
 		groupRadioEstagio.add(rdbtnBaby);
 		rdbtnBaby.addActionListener(new ActionListener() {
@@ -209,7 +222,7 @@ public class CadastroBiometrico extends JInternalFrame {
 		});
 
 		JRadioButton rdbtnMdia = new JRadioButton("M\u00E9dia");
-		rdbtnMdia.setBounds(246, 89, 67, 23);
+		rdbtnMdia.setBounds(291, 92, 67, 23);
 		contentPane.add(rdbtnMdia);
 		rdbtnMdia.addActionListener(new ActionListener() {
 			@Override
@@ -221,14 +234,33 @@ public class CadastroBiometrico extends JInternalFrame {
 		groupRadioEstagio.add(rdbtnMdia);
 
 		JButton btnCancelar = new JButton("Cancelar");
+
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				dispose();
+				SaidaEntradaBiometria saida = new SaidaEntradaBiometria();
+				SaidaEntradaPovoamento saidaPovoamento = new SaidaEntradaPovoamento();
+				String idCapturado = textFieldIDPovoamento.getText().toString();
+				try {
+					// faz a busca e repassa os valores do banco de dados
+					// para a lista de biometrias
+
+					ListaBiometrias listaBiometrias = new ListaBiometrias();
+					listaBiometrias.repassarBiometrias(saida.resgatarBiometrias(idCapturado),
+							saidaPovoamento.resgatarPovoamento(idCapturado));
+					listaBiometrias.setVisible(true);
+					// metodo criado para passar a tela sem usar as
+					// variaveis da tela inicial
+					Home.repassarTelas(listaBiometrias);
+					dispose();
+				} catch (SQLException e2) {
+					// TODO: handle exception
+				}
 			}
+
 		});
 
 		JRadioButton rdbtnMaster = new JRadioButton("Master");
-		rdbtnMaster.setBounds(315, 92, 67, 23);
+		rdbtnMaster.setBounds(359, 92, 67, 23);
 		contentPane.add(rdbtnMaster);
 		rdbtnMaster.addActionListener(new ActionListener() {
 
@@ -241,7 +273,7 @@ public class CadastroBiometrico extends JInternalFrame {
 		});
 		groupRadioEstagio.add(rdbtnMaster);
 
-		btnCancelar.setBounds(474, 397, 89, 23);
+		btnCancelar.setBounds(191, 386, 89, 35);
 		contentPane.add(btnCancelar);
 
 		JLabel lblCrescimentoDaAmostra = new JLabel("Crescimento da amostra");
@@ -252,12 +284,12 @@ public class CadastroBiometrico extends JInternalFrame {
 		textFieldAmostra.setHorizontalAlignment(SwingConstants.RIGHT);
 		textFieldAmostra.setToolTipText("EX: 65");
 		textFieldAmostra.setColumns(10);
-		textFieldAmostra.setBounds(20, 133, 86, 20);
+		textFieldAmostra.setBounds(20, 133, 67, 20);
 		textFieldAmostra.addKeyListener(restricoes.negarLetras(textFieldAmostra));
 		contentPane.add(textFieldAmostra);
 
 		JButton btnAdicionar = new JButton("Adicionar");
-		btnAdicionar.setBounds(109, 132, 79, 23);
+		btnAdicionar.setBounds(97, 132, 79, 23);
 		btnAdicionar.addActionListener(btnAdicionar());
 		contentPane.add(btnAdicionar);
 
@@ -293,12 +325,12 @@ public class CadastroBiometrico extends JInternalFrame {
 		textFieldMediaCrescimento = new JTextField();
 		textFieldMediaCrescimento.setEditable(false);
 		textFieldMediaCrescimento.setColumns(10);
-		textFieldMediaCrescimento.setBounds(376, 133, 72, 20);
+		textFieldMediaCrescimento.setBounds(376, 133, 50, 20);
 		contentPane.add(textFieldMediaCrescimento);
 		textFieldMediaCrescimento.addKeyListener(restricoes.negarLetras(textFieldMediaCrescimento));
 
 		JLabel lblMm = new JLabel("mm");
-		lblMm.setBounds(459, 136, 25, 14);
+		lblMm.setBounds(434, 136, 25, 14);
 		contentPane.add(lblMm);
 
 		textFieldTemperatura = new JTextField();
@@ -316,7 +348,10 @@ public class CadastroBiometrico extends JInternalFrame {
 		textFieldSalinidade.setBounds(214, 253, 168, 20);
 		contentPane.add(textFieldSalinidade);
 		textFieldSalinidade.addKeyListener(restricoes.negarLetras(textFieldSalinidade));
-
+		
+		
+		
+		
 		ButtonGroup groupSistemaProducao = new ButtonGroup();
 
 		JRadioButton rdbtnLongLine = new JRadioButton("Long line");
@@ -368,6 +403,16 @@ public class CadastroBiometrico extends JInternalFrame {
 		rdbtnMesaPvc.setBounds(359, 342, 86, 23);
 		contentPane.add(rdbtnMesaPvc);
 		groupSistemaProducao.add(rdbtnMesaPvc);
+		
+		JScrollPane scrollPane = new JScrollPane((Component) null, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setBounds(469, 25, 316, 209);
+		contentPane.add(scrollPane);
+		
+		JPanel panel = new JPanel();
+		scrollPane.setViewportView(panel);
+		
+		labelGrafico = new JLabel("");
+		panel.add(labelGrafico);
 		rdbtnMesaPvc.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -393,12 +438,17 @@ public class CadastroBiometrico extends JInternalFrame {
 					int quantidadeTotal = Integer.parseInt(textFieldQtTotal.getText().toString());
 					String data = textFieldDataBiometria.getText().toString();
 					String replaceMedia = textFieldMediaCrescimento.getText().toString().replaceAll(",", ".");
+
 					double mediaCrescimento = Double.parseDouble(replaceMedia);
 					// só lembrando que ainda não desenvolvi uma
 					// forma de calcular
 					// a mortalidade e sobrevivencia
 					// que funcione em todos os casos
-					double mortalidade = 0.1;
+
+					// por enquanto a mortalidade ainda não mostra apenas os
+					// ultimos dois valores depois da virgula como eu queria
+
+					double mortalidade = Calculos.calcularMortalidade(quantidadeTotal, quantidadeMorta);
 					double sobrevivencia = 1.2;
 					int temperatura = Integer.parseInt(textFieldTemperatura.getText().toString());
 					int salinidade = Integer.parseInt(textFieldSalinidade.getText().toString());
@@ -410,10 +460,35 @@ public class CadastroBiometrico extends JInternalFrame {
 							mediaCrescimento, mortalidade, sobrevivencia, ostra, ambiente);
 					if (atualizar) {
 						biometria.criarBiometria(idDoPovoamento);
-						dispose();
+						
+						SaidaEntradaBiometria saida = new SaidaEntradaBiometria();
+						GeradorDeGraficosBiometria geradorDeGraficosBiometria = new GeradorDeGraficosBiometria();
+						try {
+							geradorDeGraficosBiometria.graficoPeriodoDeCrescimento(saida.resgatarUltimasBiometrias(idDoPovoamento), "Ultimas 12 biometrias", "período","médias");
+							geradorDeGraficosBiometria.salvarGrafico(new FileOutputStream("graficoPainel12.png"));
+							
+							File file = new File("graficoPainel12.png");
+							ImageIcon logo = new ImageIcon(file.getPath());
+							
+							labelGrafico.setIcon(logo);
+							
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (FileNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
+						//dispose();
 						// faz a busca e repassa os valores do banco de dados
 						// para a lista de biometrias
-						SaidaEntradaBiometria saida = new SaidaEntradaBiometria();
+						
+						//estou apenas testando a funcionalidade de colocar o grafico
+						/*SaidaEntradaBiometria saida = new SaidaEntradaBiometria();
 
 						SaidaEntradaPovoamento saidaPovoamento = new SaidaEntradaPovoamento();
 
@@ -425,10 +500,11 @@ public class CadastroBiometrico extends JInternalFrame {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						listaBiometrias.setVisible(true);
+						listaBiometrias.setVisible(true);*/
 						// metodo criado para passar a tela sem usar as
 						// variaveis da tela inicial
-						Home.repassarTelas(listaBiometrias);
+						
+						//Home.repassarTelas(listaBiometrias);
 					} else {
 						// aqui sera onde vai atualizar a biometria
 						biometria.editarBiometria(String.valueOf(idBiometria));
@@ -446,11 +522,8 @@ public class CadastroBiometrico extends JInternalFrame {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-
 					}
-
-					dispose();
-
+					//dispose();
 				} else {
 					JOptionPane.showMessageDialog(null, "algum campo não foi devidamente preenchido");
 
@@ -520,22 +593,22 @@ public class CadastroBiometrico extends JInternalFrame {
 	// metodo para preencher os dados referentes aquela biometria na hora de
 	// atualizar
 	public void preencherCampos(Biometria biometria, boolean atualizar) {
-		System.out.println("data da biometria: "+biometria.getDataInicial());
-		//textFieldDataBiometria.setText(ValidacaoDeDatas.padronizarDatasCampoAtualizacao(biometria.getDataInicial()));
+		System.out.println("data da biometria: " + biometria.getDataInicial());
+		// textFieldDataBiometria.setText(ValidacaoDeDatas.padronizarDatasCampoAtualizacao(biometria.getDataInicial()));
 		textFieldMediaCrescimento.setText(String.valueOf(biometria.getMediaCrescimento()));
 		textFieldQtMorta.setText(String.valueOf(biometria.getQtMorta()));
 		textFieldQtTotal.setText(String.valueOf(biometria.getQtTotal()));
 		textFieldSalinidade.setText(String.valueOf(biometria.getSalinidade()));
 		textFieldTemperatura.setText(String.valueOf(biometria.getTemperatura()));
-		
+
 		// vamos começar a depuração
-		System.out.println("Biometria quantidade total: "+biometria.getQtTotal());
-		System.out.println("Biometria quantidade morta: "+biometria.getQtMorta());
-		
+		System.out.println("Biometria quantidade total: " + biometria.getQtTotal());
+		System.out.println("Biometria quantidade morta: " + biometria.getQtMorta());
+
 		this.idBiometria = biometria.getIDBiometria();
 		this.atualizar = atualizar;
 	}
- 
+
 	public void atualizarCampos(String idPovoamento) {
 		// textFieldIDPovoamento.setText(String.valueOf(povoamento.getIDPovoamentos()));
 		textFieldIDPovoamento.setText(String.valueOf(idPovoamento));
