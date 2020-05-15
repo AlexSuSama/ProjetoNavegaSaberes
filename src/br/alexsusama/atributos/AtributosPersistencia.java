@@ -70,13 +70,18 @@ public class AtributosPersistencia {
 	}
 
 	// comandos de pesquisa sql para a biometria
-	private String QUANTIDADEMORTA = "quantidademorta", QUANTIDADETOTAL = "qauntidadetotal",
-			idParentPovoamento = "\"id-dos-povoamentos\"", ESTAGIO_CRESCIMENTO = "estagio_crescimento",
-			TEMPERATURA = "temperatura", SALINIDADE = "salinidade", MEDIA_CRESCIMENTO = "media_crescimento",
-			MORTALIDADE = "mortalidade", SOBREVIVENCIA = "sobrevivencia", DATA_COLETA = "data_coleta",
-			SISTEMA_PRODUCAO = "sistema_producao";
+	private String QUANTIDADEMORTA = "quantidademorta";
+	private String QUANTIDADETOTAL = "qauntidadetotal";
+	private String idParentPovoamento = "\"id-dos-povoamentos\"";
+	private String ESTAGIO_CRESCIMENTO = "estagio_crescimento";
+	private String TEMPERATURA = "temperatura";
+	private String SALINIDADE = "salinidade";
+	private String MEDIA_CRESCIMENTO = "media_crescimento";
+	private String MORTALIDADE = "mortalidade";
+	private String SOBREVIVENCIA = "sobrevivencia";
+	private String DATA_COLETA = "data_coleta";
+	private String SISTEMA_PRODUCAO = "sistema_producao";
 	private String ID_BIOMETRIA = "idbiometria";
-
 	private String tabelaBiometria = "biometria";
 
 	public String getID_BIOMETRIA() {
